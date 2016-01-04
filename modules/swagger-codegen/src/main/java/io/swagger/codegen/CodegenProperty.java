@@ -39,6 +39,7 @@ public class CodegenProperty {
     public Map<String, Object> allowableValues;
     public CodegenProperty items;
     public Map<String, Object> vendorExtensions;
+    public Object customObject; // Used for generators that want more specialized information in the mustache file
 
     @Override
     public boolean equals(Object obj) {

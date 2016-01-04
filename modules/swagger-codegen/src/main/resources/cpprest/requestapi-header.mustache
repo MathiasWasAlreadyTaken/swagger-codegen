@@ -1,0 +1,52 @@
+/**
+ * {{appName}}
+ *
+ * {{appDescription}}
+ *
+ * Version: {{version}}
+ * Generated: {{generatedDate}}
+ */
+
+#ifndef {{classname}}_H_
+#define {{classname}}_H_
+
+#include "RequestObject.h"
+#include "ModelObject.h"
+
+{{#imports}}{{{import}}}
+{{/imports}}
+
+
+namespace swagger {
+    namespace cpprest {
+
+        class HttpManagerBase;
+
+        namespace model {
+            class ModelObject;
+        }
+
+        namespace request {
+            {{#operations}}
+            namespace {{pathPrefix}} {
+                {{#operation}}
+                class {{#customObject}}{{operation}}Request{{/customObject}} : public RequestObject
+                {
+                public:
+                    {{#customObject}}{{operation}}{{/customObject}}Request(const utility::string_t& baseUrl, HttpManagerBase& httpManager);
+                    virtual ~{{#customObject}}{{operation}}{{/customObject}}Request();
+
+                    {{#hasProduces}}{{#bodyParam}}{{^required}}void {{#customObject}}{{execute}}{{/customObject}}(std::function<void(unsigned short, const model::{{#returnBaseType}}{{{returnBaseType}}}{{/returnBaseType}}{{^returnBaseType}}ModelObject{{/returnBaseType}}&)> callback);{{/required}}{{/bodyParam}}{{/hasProduces}}
+                    void {{#customObject}}{{execute}}{{/customObject}}({{#hasProduces}}{{#bodyParam}}{{{dataType}}} {{paramName}}, {{/bodyParam}}{{/hasProduces}}std::function<void(unsigned short, const model::{{#returnBaseType}}{{{returnBaseType}}}{{/returnBaseType}}{{^returnBaseType}}ModelObject{{/returnBaseType}}&)> callback);
+
+                private:
+                    model::{{#returnBaseType}}{{{returnBaseType}}}{{/returnBaseType}}{{^returnBaseType}}ModelObject{{/returnBaseType}} responseObject_;
+                };
+                {{/operation}}
+            }
+            {{/operations}}
+        }
+    }
+}
+
+#endif // {{classname}}_H_

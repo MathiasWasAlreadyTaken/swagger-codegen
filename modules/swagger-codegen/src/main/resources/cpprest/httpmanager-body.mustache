@@ -1,0 +1,69 @@
+/**
+ * {{appName}}
+ *
+ * {{appDescription}}
+ *
+ * Version: {{version}}
+ * Generated: {{generatedDate}}
+ */
+
+#include "HttpManager.h"
+{{#operations}}{{#value}}{{#classname}}#include "{{{classname}}}.h"{{/classname}}{{/value}}
+{{/operations}}
+
+namespace swagger {
+	namespace cpprest {
+
+			HttpManagerBase::HttpManagerBase(const utility::string_t& baseUrl) : baseUrl_(baseUrl)
+			{
+			}
+
+			void HttpManagerBase::addRequest(std::shared_ptr<request::RequestObject> request)
+			{
+				std::unique_lock<std::mutex> lck(ongoingRequestsMutex_);
+				ongoingRequests_.push_back(request);
+			}
+
+			std::shared_ptr<request::RequestObject> HttpManagerBase::removeRequest(const request::RequestObject* object)
+			{
+				std::unique_lock<std::mutex> lck(ongoingRequestsMutex_);
+				for (auto it = ongoingRequests_.begin(); it != ongoingRequests_.end(); ++it) {
+					std::shared_ptr<request::RequestObject> req = *it;
+					if (req.get() == object) {
+						ongoingRequests_.erase(it);
+						return req;
+					}
+				}
+				return std::shared_ptr<request::RequestObject>();
+			}
+
+			const utility::string_t& HttpManagerBase::getBaseUrl() const
+			{
+				return baseUrl_;
+			}
+		{{#operations}}
+		namespace {{key}} {
+
+			HttpManager::HttpManager() : HttpManagerBase(L"{{basePath}}")
+			{
+			
+			}
+
+			HttpManager::HttpManager(const utility::string_t& baseUrl) : HttpManagerBase(baseUrl)
+			{
+
+			}
+
+			{{#value}}
+			{{#operation}}{{#customObject}}std::weak_ptr<request::{{namespace}}::{{operation}}Request> HttpManager::create{{operation}}Request()
+			{
+				std::shared_ptr<request::{{namespace}}::{{operation}}Request> ptr(new request::{{namespace}}::{{operation}}Request(getBaseUrl(), *this));
+				addRequest(ptr);
+				return ptr;
+			}{{/customObject}}
+			{{/operation}}
+			{{/value}}
+		}
+		{{/operations}}
+	}
+}

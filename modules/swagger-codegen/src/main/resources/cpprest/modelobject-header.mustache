@@ -1,0 +1,37 @@
+/**
+ * {{appName}}
+ *
+ * {{appDescription}}
+ *
+ * Version: {{version}}
+ * Generated: {{generatedDate}}
+ */
+
+#ifndef __MODEL_OBJECT_H__
+#define __MODEL_OBJECT_H__
+
+#include <cpprest/details/basic_types.h>
+
+namespace web {
+    namespace json {
+        class value;
+    }
+}
+
+namespace swagger {
+    namespace cpprest {
+        namespace model {
+
+            class ModelObject {
+            public:
+                virtual ~ModelObject() {}
+
+                virtual web::json::value toJson() const;
+                virtual void fromJson(web::json::value& json);
+            };
+            
+        }
+    }
+}
+
+#endif

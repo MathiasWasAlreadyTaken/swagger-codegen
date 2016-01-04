@@ -1,0 +1,50 @@
+/**
+ * {{appName}}
+ *
+ * {{appDescription}}
+ *
+ * Version: {{version}}
+ * Generated: {{generatedDate}}
+ */
+
+#ifndef __REQUEST_OBJECT_H__
+#define __REQUEST_OBJECT_H__
+
+#include <cpprest/http_client.h>
+
+namespace swagger {
+    namespace cpprest {
+        class HttpManagerBase;
+    
+        namespace request {
+
+            class RequestObject
+            {
+            public:
+                RequestObject(const utility::string_t& baseUrl, HttpManagerBase& manager);
+                RequestObject(const RequestObject& other);
+                virtual ~RequestObject() {}
+                
+                virtual void cancel();
+                virtual void addUrlParameter(const utility::string_t& key, const utility::string_t& value);
+                virtual void addHeader(const utility::string_t& header, const utility::string_t& value);
+                virtual void setTimeout(long long seconds);
+
+            protected:
+                web::http::client::http_client_config httpConfig_;
+                pplx::cancellation_token_source cancelToken_;
+                web::http::status_code statusCode_;
+                const utility::string_t& baseUrl_;
+                HttpManagerBase& manager_;
+                std::map<utility::string_t, utility::string_t> params_;
+                std::map<utility::string_t, utility::string_t> headers_;
+
+            private:         
+                RequestObject& operator=(const RequestObject& other);
+            };
+
+        }
+    }
+}
+
+#endif

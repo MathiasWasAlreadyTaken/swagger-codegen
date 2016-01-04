@@ -303,6 +303,7 @@ AkkaScalaClientCodegen.java
 AndroidClientCodegen.java
 AndroidVolleyClientCodegen.java
 AsyncScalaClientCodegen.java
+CpprestClientCodegen.java
 CSharpClientCodegen.java
 ClojureClientCodegen.java
 CsharpDotNet2ClientCodegen.java

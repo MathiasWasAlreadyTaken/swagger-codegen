@@ -9,6 +9,7 @@ import io.swagger.codegen.CodegenConfigLoader;
 import io.swagger.codegen.options.AkkaScalaClientOptionsProvider;
 import io.swagger.codegen.options.AndroidClientOptionsProvider;
 import io.swagger.codegen.options.AsyncScalaClientOptionsProvider;
+import io.swagger.codegen.options.CpprestClientOptionsProvider;
 import io.swagger.codegen.options.CSharpClientOptionsProvider;
 import io.swagger.codegen.options.CsharpDotNet2ClientOptionsProvider;
 import io.swagger.codegen.options.DartClientOptionsProvider;
@@ -69,7 +70,7 @@ public class OnlineGeneratorOptionsTest {
     @DataProvider(name = OPTIONS_PROVIDER)
     private Object[][] listOptions() {
         return new Object[][]{{new AkkaScalaClientOptionsProvider()}, {new AndroidClientOptionsProvider()},
-                {new AsyncScalaClientOptionsProvider()}, {new CSharpClientOptionsProvider()},
+                {new AsyncScalaClientOptionsProvider()}, {new CpprestClientOptionsProvider()}, {new CSharpClientOptionsProvider()},
                 {new CsharpDotNet2ClientOptionsProvider()}, {new DartClientOptionsProvider()},
                 {new FlashClienOptionsProvider()}, {new JavaInflectorServerOptionsProvider()},
                 {new JavaOptionsProvider()}, {new JaxRSServerOptionsProvider()},
