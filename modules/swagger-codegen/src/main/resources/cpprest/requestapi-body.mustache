@@ -73,10 +73,10 @@ namespace swagger {
                             task.get();
                             manager_.removeRequest(this);
                         } catch (const web::http::http_exception& e) {
-                            statusCode_ = e.error_code().value();
+                            callback(e.error_code().value(), responseObject_);
                             manager_.removeRequest(this);
                         } catch (const std::exception&) {
-                            statusCode_ = 500;
+                            callback(500, responseObject_);
                             manager_.removeRequest(this);
                         }
                     });
