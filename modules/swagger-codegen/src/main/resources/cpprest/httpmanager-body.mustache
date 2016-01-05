@@ -44,7 +44,7 @@ namespace swagger {
 		{{#operations}}
 		namespace {{key}} {
 
-			HttpManager::HttpManager() : HttpManagerBase(L"{{basePath}}")
+			HttpManager::HttpManager() : HttpManagerBase(U("{{basePath}}"))
 			{
 			
 			}

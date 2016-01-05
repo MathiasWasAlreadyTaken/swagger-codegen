@@ -37,7 +37,7 @@ namespace swagger {
                 void {{#customObject}}{{operation}}Request::{{execute}}{{/customObject}}({{#hasProduces}}{{#bodyParam}}{{{dataType}}} {{paramName}}, {{/bodyParam}}{{/hasProduces}}std::function<void(unsigned short, const model::{{#returnBaseType}}{{{returnBaseType}}}{{/returnBaseType}}{{^returnBaseType}}ModelObject{{/returnBaseType}}&)> callback)
                 {
                     web::uri_builder uriBuilder;
-                    uriBuilder.append_path(L"{{path}}");
+                    uriBuilder.append_path(U("{{path}}"));
                     std::for_each(params_.begin(), params_.end(), [&](std::map<utility::string_t, utility::string_t>::value_type& pair) {
                         uriBuilder.append_query(pair.first, pair.second);
                     });
@@ -46,7 +46,7 @@ namespace swagger {
 
                     web::http::client::http_client httpClient(web::uri(baseUrl_), httpConfig_);
                     web::http::http_request request(web::http::methods::{{httpMethod}});
-                    {{#hasConsumes}}request.headers().add(L"Accept", L"{{#consumes}}{{^-first}}, {{/-first}}{{mediaType}}{{/consumes}}");{{/hasConsumes}}
+                    {{#hasConsumes}}request.headers().add(U("Accept"), U("{{#consumes}}{{^-first}}, {{/-first}}{{mediaType}}{{/consumes}}"));{{/hasConsumes}}
                     std::for_each(headers_.begin(), headers_.end(), [&](std::map<utility::string_t, utility::string_t>::value_type& pair) {
                         request.headers().add(pair.first, pair.second);
                     });
@@ -58,9 +58,9 @@ namespace swagger {
 
                     auto t = httpClient.request(request, token).then([=](web::http::http_response response) {
                         statusCode_ = response.status_code();
-                        if (response.headers().has(L"Content-Type")) {
-                            const utility::string_t contentType(response.headers()[L"Content-Type"]);
-                            if (contentType == L"application/json") {
+                        if (response.headers().has(U("Content-Type"))) {
+                            const utility::string_t contentType(response.headers()[U("Content-Type"]));
+                            if (contentType == U("application/json")) {
                                 pplx::task<void> t = response.extract_json().then([=](web::json::value jsonValue) {
                                     responseObject_.fromJson(jsonValue);
                                     callback(statusCode_, responseObject_);
