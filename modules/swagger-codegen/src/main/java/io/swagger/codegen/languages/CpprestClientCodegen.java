@@ -75,7 +75,25 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
         stdTypesInclude.put("std::vector", "vector");
         stdTypesInclude.put("std::vector<char>", "vector");
         stdTypesInclude.put("std::map", "map");
-        stdTypesInclude.put("boost::posix_time::ptime", "boost/date_time.hpp");
+        stdTypesInclude.put("Binary", "vector");
+        stdTypesInclude.put("Date", "cpprest/asyncrt_utils.h");
+        stdTypesInclude.put("DateTime", "cpprest/asyncrt_utils.h");
+
+        /*enum value_type
+        {
+            /// Number value
+            Number,
+            /// Boolean value
+            Boolean,
+            /// String value
+            String,
+            /// Object value
+            Object,
+            /// Array value
+            Array,
+            /// Null value
+            Null
+        };*/
 
         jsonTypeMapping.put("int", "web::json::value::number");
         jsonTypeMapping.put("int32_t", "web::json::value::number");
@@ -84,14 +102,16 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
         jsonTypeMapping.put("double", "web::json::value::number");
         jsonTypeMapping.put("float", "web::json::value::number");
         jsonTypeMapping.put("bool", "web::json::value::boolean");
-        jsonTypeMapping.put("boost::posix_time::ptime", "web::json::value::string");
+        jsonTypeMapping.put("Date", "web::json::value::string");
+        jsonTypeMapping.put("DateTime", "web::json::value::string");
         jsonTypeMapping.put("std::string", "web::json::value::string");
         jsonTypeMapping.put("utility::string_t", "web::json::value::string");
         jsonTypeMapping.put("std::vector", "web::json::value::array");
 
         typeFormatMapping.put("byte", "std::string");
-        typeFormatMapping.put("date", "boost::posix_time::ptime");
-        typeFormatMapping.put("date-time", "boost::posix_time::ptime");
+        typeFormatMapping.put("binary", "std::vector<char>");
+        typeFormatMapping.put("date", "utility::datetime");
+        typeFormatMapping.put("date-time", "utility::datetime");
 
         reservedWords = new HashSet<String>(
                 // According to http://en.cppreference.com/w/cpp/keyword and http://en.cppreference.com/w/c/keyword
@@ -116,6 +136,7 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
 
         super.typeMapping = new HashMap<String, String>();
         typeMapping.put("ByteArray", "std::vector<char>");
+        typeMapping.put("Binary", "std::vector<char>");
         typeMapping.put("integer", "int");
         typeMapping.put("number", "long long");
         typeMapping.put("string", "utility::string_t");
@@ -295,9 +316,9 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
         } else if (p instanceof BooleanProperty) {
             return "false";
         } else if (p instanceof DateProperty) {
-            return "boost::posix_time::ptime";
+            return "utility::datetime()";
         } else if (p instanceof DateTimeProperty) {
-            return "boost::posix_time::ptime";
+            return "utility::datetime()";
         } else if (p instanceof DoubleProperty) {
             return "0d";
         } else if (p instanceof FloatProperty) {
