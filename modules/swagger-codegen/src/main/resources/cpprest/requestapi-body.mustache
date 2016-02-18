@@ -45,7 +45,7 @@ namespace swagger {
                     auto token = cancelToken_.get_token();
 
                     web::http::client::http_client httpClient(web::uri(baseUrl_), httpConfig_);
-                    web::http::http_request request(web::http::methods::{{httpMethod}});
+                    web::http::http_request request(web::http::methods::{{#customObject}}{{httpMethod}}{{/customObject}});
                     {{#hasConsumes}}request.headers().add(U("Accept"), U("{{#consumes}}{{^-first}}, {{/-first}}{{mediaType}}{{/consumes}}"));{{/hasConsumes}}
                     std::for_each(headers_.begin(), headers_.end(), [&](std::map<utility::string_t, utility::string_t>::value_type& pair) {
                         request.headers().add(pair.first, pair.second);

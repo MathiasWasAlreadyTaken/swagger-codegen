@@ -39,6 +39,7 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
         public String operation;
         public String execute;
         public String namespace;
+        public String httpMethod;
     }
 
     public CpprestClientCodegen() {
@@ -286,6 +287,7 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
             custom.operation = initialCaps(op.nickname);
             custom.execute = "execute";
             custom.namespace = op.baseName.toLowerCase();
+            custom.httpMethod = toHttpMethod(op.httpMethod);
             op.customObject = custom;
         }
         pathPrefixes.putAll(operations);
@@ -394,6 +396,31 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
 
         // add_pet_by_id => addPetById
         return camelize(operationId, true);
+    }
+
+    private String toHttpMethod(String httpMethod) {
+        if (httpMethod.equals("GET")) {
+            return "GET";
+        } else if (httpMethod.equals("POST")) {
+            return "POST";
+        } else if (httpMethod.equals("PUT")) {
+            return "PUT";
+        } else if (httpMethod.equals("DELETE")) {
+            return "DEL";
+        } else if (httpMethod.equals("HEAD")) {
+            return "HEAD";
+        } else if (httpMethod.equals("OPTIONS")) {
+            return "OPTIONS";
+        } else if (httpMethod.equals("TRACE")) {
+            return "TRCE";
+        } else if (httpMethod.equals("CONNECT")) {
+            return "CONNECT";
+        } else if (httpMethod.equals("MERGE")) {
+            return "MERGE";
+        } else if (httpMethod.equals("PATCH")) {
+            return "PATCH";
+        }
+        return "UNKNOWN_METHOD";
     }
 
 }
