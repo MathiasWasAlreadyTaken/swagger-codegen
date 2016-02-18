@@ -284,7 +284,7 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
         for (CodegenOperation op: ops) {
             CustomOperation custom = new CustomOperation();
             custom.operation = initialCaps(op.nickname);
-            custom.execute = op.httpMethod.toLowerCase();
+            custom.execute = "execute";
             custom.namespace = op.baseName.toLowerCase();
             op.customObject = custom;
         }
