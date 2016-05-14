@@ -31,8 +31,8 @@ namespace swagger {
                 });
                 if ({{name}}Array.size()) {
                     val[U("{{name}}")] = {{customObject.jsonValueType}}(array);
-                }{{/isContainer}}{{^isContainer}}val[U("{{name}}")] = {{customObject.jsonValueType}}({{getter}}());{{/isContainer}}{{/complexType}}
-                {{^complexType}}val[U("{{name}}")] = {{customObject.jsonValueType}}({{getter}}());
+                }{{/isContainer}}{{^isContainer}}val[U("{{name}}")] = {{customObject.jsonValueType}}({{getter}}(){{#customObject}}{{#isDateTime}}.to_string(utility::datetime::ISO_8601){{/isDateTime}}{{/customObject}});{{/isContainer}}{{/complexType}}
+                {{^complexType}}val[U("{{name}}")] = {{customObject.jsonValueType}}({{getter}}(){{#customObject}}{{#isDateTime}}.to_string(utility::datetime::ISO_8601){{/isDateTime}}{{/customObject}});
                 {{/complexType}}{{/vars}}
                 return val;
             }

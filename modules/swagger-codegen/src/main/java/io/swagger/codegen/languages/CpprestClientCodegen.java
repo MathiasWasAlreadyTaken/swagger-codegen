@@ -32,6 +32,7 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
         public String jsonValueType;
         public String inner;
         public boolean isString = false;
+        public boolean isDateTime = false;
     }
     public class CustomOperation {
         public String operation;
@@ -265,6 +266,8 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
                 }
                 if (var.datatype.equals("utility::string_t")) {
                     customProperty.isString = true;
+                } else if (var.datatype.equals("utility::datetime")) {
+                    customProperty.isDateTime = true;
                 }
                 var.customObject = customProperty;
             }
