@@ -1,7 +1,7 @@
 # coding: utf-8
 
 """
-Copyright 2015 SmartBear Software
+Copyright 2016 SmartBear Software
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ Copyright 2015 SmartBear Software
 
 from pprint import pformat
 from six import iteritems
+import re
 
 
 class Order(object):
@@ -59,7 +60,7 @@ class Order(object):
         self._quantity = None
         self._ship_date = None
         self._status = None
-        self._complete = None
+        self._complete = False
 
     @property
     def id(self):
@@ -81,6 +82,7 @@ class Order(object):
         :param id: The id of this Order.
         :type: int
         """
+        
         self._id = id
 
     @property
@@ -103,6 +105,7 @@ class Order(object):
         :param pet_id: The pet_id of this Order.
         :type: int
         """
+        
         self._pet_id = pet_id
 
     @property
@@ -125,6 +128,7 @@ class Order(object):
         :param quantity: The quantity of this Order.
         :type: int
         """
+        
         self._quantity = quantity
 
     @property
@@ -147,6 +151,7 @@ class Order(object):
         :param ship_date: The ship_date of this Order.
         :type: datetime
         """
+        
         self._ship_date = ship_date
 
     @property
@@ -175,6 +180,7 @@ class Order(object):
                 "Invalid value for `status`, must be one of {0}"
                 .format(allowed_values)
             )
+
         self._status = status
 
     @property
@@ -197,6 +203,7 @@ class Order(object):
         :param complete: The complete of this Order.
         :type: bool
         """
+        
         self._complete = complete
 
     def to_dict(self):
@@ -214,6 +221,12 @@ class Order(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
+            elif isinstance(value, dict):
+                result[attr] = dict(map(
+                    lambda item: (item[0], item[1].to_dict())
+                    if hasattr(item[1], "to_dict") else item,
+                    value.items()
+                ))
             else:
                 result[attr] = value
 
@@ -231,14 +244,14 @@ class Order(object):
         """
         return self.to_str()
 
-    def __eq__(self, other): 
+    def __eq__(self, other):
         """
         Returns true if both objects are equal
         """
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other):
-        """ 
+        """
         Returns true if both objects are not equal
         """
         return not self == other

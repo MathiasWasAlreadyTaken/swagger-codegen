@@ -2,7 +2,7 @@
 
 ## Before submitting an issue
 
- - Before submitting an issue, search the [open issue](https://github.com/swagger-api/swagger-codegen/issues) and [closed issue](https://github.com/swagger-api/swagger-codegen/issues?q=is%3Aissue+is%3Aclosed) to ensure no one else has reported something similar before.
+ - Search the [open issue](https://github.com/swagger-api/swagger-codegen/issues) and [closed issue](https://github.com/swagger-api/swagger-codegen/issues?q=is%3Aissue+is%3Aclosed) to ensure no one else has reported something similar before.
  - The issue should contain details on how to repeat the issue, e.g. 
    - the OpenAPI Spec for reproducing the issue (:bulb: use [Gist](https://gist.github.com) to share). If the OpenAPI Spec cannot be shared publicly, it will be hard for the community to help
    - version of Swagger Codegen
@@ -13,6 +13,7 @@
 
  - Search the [open issue](https://github.com/swagger-api/swagger-codegen/issues) to ensure no one else has reported something similar and no one is actively working on similar proposed change.
  - If no one has suggested something similar, open an ["issue"](https://github.com/swagger-api/swagger-codegen/issues) with your suggestion to gather feedback from the community.
+ - It's recommended to **create a new git branch** for the change
 
 ## How to contribute
 
@@ -31,10 +32,14 @@ For a list of variables available in the template, please refer to this [page](h
 Code change should conform to the programming style guide of the respective langauages:
 - C#: https://msdn.microsoft.com/en-us/library/vstudio/ff926074.aspx
 - Java: https://google.github.io/styleguide/javaguide.html
+- JavaScript: https://github.com/airbnb/javascript/tree/master/es5
+- Go: https://github.com/golang/go/wiki/CodeReviewComments
 - ObjC: https://github.com/NYTimes/objective-c-style-guide
+- Perl: http://perldoc.perl.org/perlstyle.html
 - PHP: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
 - Python: https://www.python.org/dev/peps/pep-0008/
 - Ruby: https://github.com/bbatsov/ruby-style-guide
+- Swift: https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html
 - TypeScript: https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines
 
 

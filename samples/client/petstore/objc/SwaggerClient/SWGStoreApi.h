@@ -21,30 +21,27 @@
 +(SWGStoreApi*) sharedAPI;
 ///
 ///
+/// Delete purchase order by ID
+/// For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
+///
+/// @param orderId ID of the order that needs to be deleted
+/// 
+///
+/// @return 
+-(NSNumber*) deleteOrderWithOrderId: (NSString*) orderId
+    completionHandler: (void (^)(NSError* error)) handler;
+
+
+///
+///
 /// Returns pet inventories by status
 /// Returns a map of status codes to quantities
 ///
 /// 
 ///
-/// @return NSDictionary* /* NSString, NSNumber */
--(NSNumber*) getInventoryWithCompletionBlock :
-    (void (^)(NSDictionary* /* NSString, NSNumber */ output, NSError* error))completionBlock;
-    
-
-
-///
-///
-/// Place an order for a pet
-/// 
-///
-/// @param body order placed for purchasing the pet
-/// 
-///
-/// @return SWGOrder*
--(NSNumber*) placeOrderWithCompletionBlock :(SWGOrder*) body 
-    
-    completionHandler: (void (^)(SWGOrder* output, NSError* error))completionBlock;
-    
+/// @return NSDictionary<NSString*, NSNumber*>*
+-(NSNumber*) getInventoryWithCompletionHandler: 
+    (void (^)(NSDictionary<NSString*, NSNumber*>* output, NSError* error)) handler;
 
 
 ///
@@ -56,25 +53,21 @@
 /// 
 ///
 /// @return SWGOrder*
--(NSNumber*) getOrderByIdWithCompletionBlock :(NSString*) orderId 
-    
-    completionHandler: (void (^)(SWGOrder* output, NSError* error))completionBlock;
-    
+-(NSNumber*) getOrderByIdWithOrderId: (NSString*) orderId
+    completionHandler: (void (^)(SWGOrder* output, NSError* error)) handler;
 
 
 ///
 ///
-/// Delete purchase order by ID
-/// For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
-///
-/// @param orderId ID of the order that needs to be deleted
+/// Place an order for a pet
 /// 
 ///
-/// @return 
--(NSNumber*) deleteOrderWithCompletionBlock :(NSString*) orderId 
-    
-    
-    completionHandler: (void (^)(NSError* error))completionBlock;
+/// @param body order placed for purchasing the pet (optional)
+/// 
+///
+/// @return SWGOrder*
+-(NSNumber*) placeOrderWithBody: (SWGOrder*) body
+    completionHandler: (void (^)(SWGOrder* output, NSError* error)) handler;
 
 
 

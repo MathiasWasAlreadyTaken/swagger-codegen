@@ -19,17 +19,18 @@ fi
 
 cd $APP_DIR
 ./bin/akka-scala-petstore.sh
-./bin/android-java-petstore.sh
+./bin/android-petstore.sh
 ./bin/clojure-petstore.sh
 ./bin/cpprest-petstore.sh
 ./bin/csharp-petstore.sh
 ./bin/dynamic-html.sh
+./bin/haskell-petstore.sh
 ./bin/html-petstore.sh
 ./bin/java-petstore.sh
 ./bin/java-petstore-jersey2.sh
 ./bin/java-petstore-okhttp-gson.sh
 ./bin/java-petstore-retrofit.sh
-+./bin/java-petstore-retrofit2.sh
+./bin/java-petstore-retrofit2.sh
 ./bin/jaxrs-petstore-server.sh
 ./bin/nodejs-petstore-server.sh
 ./bin/objc-petstore.sh
@@ -48,4 +49,7 @@ cd $APP_DIR
 ./bin/swift-petstore.sh
 ./bin/tizen-petstore.sh
 ./bin/typescript-angular-petstore.sh
+./bin/typescript-angular2-petstore.sh
+./bin/typescript-angular2-petstore-with-npm.sh
 ./bin/typescript-node-petstore.sh
+./bin/lumen-petstore-server.sh

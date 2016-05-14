@@ -1,5 +1,9 @@
 package io.swagger.petstore.test;
 
+import com.google.gson.reflect.TypeToken;
+
+import io.swagger.TestUtils;
+
 import io.swagger.client.*;
 import io.swagger.client.api.*;
 import io.swagger.client.auth.*;
@@ -8,6 +12,7 @@ import io.swagger.client.model.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -66,6 +71,23 @@ public class PetApiTest {
         assertNotNull(fetched.getCategory());
         assertEquals(fetched.getCategory().getName(), pet.getCategory().getName());
     }
+
+    /*
+    @Test
+    public void testCreateAndGetPetWithByteArray() throws Exception {
+        Pet pet = createRandomPet();
+        byte[] bytes = serializeJson(pet, api.getApiClient()).getBytes();
+        api.addPetUsingByteArray(bytes);
+
+        byte[] fetchedBytes = api.petPetIdtestingByteArraytrueGet(pet.getId());
+        Type type = new TypeToken<Pet>(){}.getType();
+        Pet fetched = deserializeJson(new String(fetchedBytes), type, api.getApiClient());
+        assertNotNull(fetched);
+        assertEquals(pet.getId(), fetched.getId());
+        assertNotNull(fetched.getCategory());
+        assertEquals(fetched.getCategory().getName(), pet.getCategory().getName());
+    }
+    */
 
     @Test
     public void testCreateAndGetPetWithHttpInfo() throws Exception {
@@ -177,6 +199,42 @@ public class PetApiTest {
         assertEquals("application/json", exception.getResponseHeaders().get("Content-Type").get(0));
     }
 
+    /*
+    @Test
+    public void testGetPetByIdInObject() throws Exception {
+        Pet pet = new Pet();
+        pet.setId(TestUtils.nextId());
+        pet.setName("pet " + pet.getId());
+
+        Category category = new Category();
+        category.setId(TestUtils.nextId());
+        category.setName("category " + category.getId());
+        pet.setCategory(category);
+
+        pet.setStatus(Pet.StatusEnum.PENDING);
+        List<String> photos = Arrays.asList(new String[]{"http://foo.bar.com/1"});
+        pet.setPhotoUrls(photos);
+
+        api.addPet(pet);
+
+        InlineResponse200 fetched = api.getPetByIdInObject(pet.getId());
+        assertEquals(pet.getId(), fetched.getId());
+        assertEquals(pet.getName(), fetched.getName());
+
+        Object categoryObj = fetched.getCategory();
+        assertNotNull(categoryObj);
+        assertTrue(categoryObj instanceof Map);
+
+        Map categoryMap = (Map) categoryObj;
+        Object categoryIdObj = categoryMap.get("id");
+        // NOTE: Gson parses integer value to double.
+        assertTrue(categoryIdObj instanceof Double);
+        Long categoryIdLong = ((Double) categoryIdObj).longValue();
+        assertEquals(category.getId(), categoryIdLong);
+        assertEquals(category.getName(), categoryMap.get("name"));
+    }
+    */
+
     @Test
     public void testUpdatePet() throws Exception {
         Pet pet = createRandomPet();
@@ -195,11 +253,11 @@ public class PetApiTest {
     public void testFindPetsByStatus() throws Exception {
         Pet pet = createRandomPet();
         pet.setName("programmer");
-        pet.setStatus(Pet.StatusEnum.AVAILABLE);
+        pet.setStatus(Pet.StatusEnum.PENDING);
 
         api.updatePet(pet);
 
-        List<Pet> pets = api.findPetsByStatus(Arrays.asList(new String[]{"available"}));
+        List<Pet> pets = api.findPetsByStatus(Arrays.asList(new String[]{"pending"}));
         assertNotNull(pets);
 
         boolean found = false;
@@ -211,6 +269,8 @@ public class PetApiTest {
         }
 
         assertTrue(found);
+
+        api.deletePet(pet.getId(), null);
     }
 
     @Test
@@ -238,6 +298,8 @@ public class PetApiTest {
             }
         }
         assertTrue(found);
+
+        api.deletePet(pet.getId(), null);
     }
 
     @Test
@@ -248,7 +310,7 @@ public class PetApiTest {
 
         Pet fetched = api.getPetById(pet.getId());
 
-        api.updatePetWithForm(String.valueOf(fetched.getId()), "furt", null);
+        api.updatePetWithForm(fetched.getId(), "furt", null);
         Pet updated = api.getPetById(fetched.getId());
 
         assertEquals(updated.getName(), "furt");
@@ -312,7 +374,7 @@ public class PetApiTest {
 
     private Pet createRandomPet() {
         Pet pet = new Pet();
-        pet.setId(System.currentTimeMillis());
+        pet.setId(TestUtils.nextId());
         pet.setName("gorilla");
 
         Category category = new Category();
@@ -324,5 +386,13 @@ public class PetApiTest {
         pet.setPhotoUrls(photos);
 
         return pet;
+    }
+
+    private String serializeJson(Object o, ApiClient apiClient) {
+        return apiClient.getJSON().serialize(o);
+    }
+
+    private <T> T deserializeJson(String json, Type type, ApiClient apiClient) {
+        return (T) apiClient.getJSON().deserialize(json, type);
     }
 }

@@ -1,25 +1,23 @@
 package io.swagger.client.model;
 
+import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.Objects;
 
 import com.google.gson.annotations.SerializedName;
 
 
 
 
-@ApiModel(description = "")
+
 public class Category   {
   
   @SerializedName("id")
   private Long id = null;
-  
+
   @SerializedName("name")
   private String name = null;
-  
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -30,7 +28,6 @@ public class Category   {
     this.id = id;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -41,7 +38,6 @@ public class Category   {
     this.name = name;
   }
 
-  
 
   @Override
   public boolean equals(Object o) {

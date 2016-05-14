@@ -1,8 +1,13 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Category;
-import java.util.*;
 import io.swagger.model.Tag;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.swagger.annotations.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +16,7 @@ import java.util.Objects;
 
 
 @ApiModel(description = "")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringMVCServerCodegen", date = "2015-11-24T12:32:52.703+08:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringMVCServerCodegen", date = "2016-05-03T13:43:02.966+02:00")
 public class Pet  {
   
   private Long id = null;
@@ -22,9 +27,9 @@ public class Pet  {
   public enum StatusEnum {
      available,  pending,  sold, 
   };
+  
   private StatusEnum status = null;
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -36,7 +41,6 @@ public class Pet  {
     this.id = id;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -48,7 +52,6 @@ public class Pet  {
     this.category = category;
   }
 
-  
   /**
    **/
   @ApiModelProperty(required = true, value = "")
@@ -60,7 +63,6 @@ public class Pet  {
     this.name = name;
   }
 
-  
   /**
    **/
   @ApiModelProperty(required = true, value = "")
@@ -72,7 +74,6 @@ public class Pet  {
     this.photoUrls = photoUrls;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -84,7 +85,6 @@ public class Pet  {
     this.tags = tags;
   }
 
-  
   /**
    * pet status in the store
    **/
@@ -97,7 +97,6 @@ public class Pet  {
     this.status = status;
   }
 
-  
 
   @Override
   public boolean equals(Object o) {

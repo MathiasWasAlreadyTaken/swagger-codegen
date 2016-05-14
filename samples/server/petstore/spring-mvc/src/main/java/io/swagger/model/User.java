@@ -1,5 +1,8 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import io.swagger.annotations.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,7 +11,7 @@ import java.util.Objects;
 
 
 @ApiModel(description = "")
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringMVCServerCodegen", date = "2015-11-24T12:32:52.703+08:00")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringMVCServerCodegen", date = "2016-05-03T13:43:02.966+02:00")
 public class User  {
   
   private Long id = null;
@@ -20,7 +23,6 @@ public class User  {
   private String phone = null;
   private Integer userStatus = null;
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -32,7 +34,6 @@ public class User  {
     this.id = id;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -44,7 +45,6 @@ public class User  {
     this.username = username;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -56,7 +56,6 @@ public class User  {
     this.firstName = firstName;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -68,7 +67,6 @@ public class User  {
     this.lastName = lastName;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -80,7 +78,6 @@ public class User  {
     this.email = email;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -92,7 +89,6 @@ public class User  {
     this.password = password;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -104,7 +100,6 @@ public class User  {
     this.phone = phone;
   }
 
-  
   /**
    * User Status
    **/
@@ -117,7 +112,6 @@ public class User  {
     this.userStatus = userStatus;
   }
 
-  
 
   @Override
   public boolean equals(Object o) {

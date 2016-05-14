@@ -1,6 +1,6 @@
 {{#models}}
 {{#model}}
-package WWW::{{moduleName}}::Object::{{classname}};
+package {{moduleName}}::Object::{{classname}};
 
 require 5.6.0;
 use strict;
@@ -30,14 +30,15 @@ __PACKAGE__->class_documentation({description => '{{description}}',
 }                                 );
 
 __PACKAGE__->method_documentation({
-    {{#vars}}'{{name}}' => {
+{{#vars}}
+    '{{name}}' => {
     	datatype => '{{datatype}}',
     	base_name => '{{baseName}}',
     	description => '{{description}}',
     	format => '{{format}}',
     	read_only => '{{readOnly}}',
     		},
-    {{/vars}}
+{{/vars}}
 });
 
 __PACKAGE__->swagger_types( {

@@ -1,61 +1,62 @@
 package io.swagger.client.model;
 
+import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
-import java.util.Objects;
 
 import com.google.gson.annotations.SerializedName;
 
 
-
-
-@ApiModel(description = "")
+/**
+ * Order
+ */
 public class Order   {
   
   @SerializedName("id")
   private Long id = null;
-  
+
   @SerializedName("petId")
   private Long petId = null;
-  
+
   @SerializedName("quantity")
   private Integer quantity = null;
-  
+
   @SerializedName("shipDate")
   private Date shipDate = null;
-  
 
-public enum StatusEnum {
-  @SerializedName("placed")
-  PLACED("placed"),
 
-  @SerializedName("approved")
-  APPROVED("approved"),
+  /**
+   * Order Status
+   */
+  public enum StatusEnum {
+    @SerializedName("placed")
+    PLACED("placed"),
 
-  @SerializedName("delivered")
-  DELIVERED("delivered");
+    @SerializedName("approved")
+    APPROVED("approved"),
 
-  private String value;
+    @SerializedName("delivered")
+    DELIVERED("delivered");
 
-  StatusEnum(String value) {
-    this.value = value;
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
   }
-
-  @Override
-  public String toString() {
-    return value;
-  }
-}
 
   @SerializedName("status")
   private StatusEnum status = null;
-  
-  @SerializedName("complete")
-  private Boolean complete = null;
-  
 
-  
+  @SerializedName("complete")
+  private Boolean complete = false;
+
   /**
    **/
   @ApiModelProperty(value = "")
@@ -66,7 +67,6 @@ public enum StatusEnum {
     this.id = id;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -77,7 +77,6 @@ public enum StatusEnum {
     this.petId = petId;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -88,7 +87,6 @@ public enum StatusEnum {
     this.quantity = quantity;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -99,7 +97,6 @@ public enum StatusEnum {
     this.shipDate = shipDate;
   }
 
-  
   /**
    * Order Status
    **/
@@ -111,7 +108,6 @@ public enum StatusEnum {
     this.status = status;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -122,7 +118,6 @@ public enum StatusEnum {
     this.complete = complete;
   }
 
-  
 
   @Override
   public boolean equals(Object o) {
@@ -133,12 +128,12 @@ public enum StatusEnum {
       return false;
     }
     Order order = (Order) o;
-    return Objects.equals(id, order.id) &&
-        Objects.equals(petId, order.petId) &&
-        Objects.equals(quantity, order.quantity) &&
-        Objects.equals(shipDate, order.shipDate) &&
-        Objects.equals(status, order.status) &&
-        Objects.equals(complete, order.complete);
+    return Objects.equals(this.id, order.id) &&
+        Objects.equals(this.petId, order.petId) &&
+        Objects.equals(this.quantity, order.quantity) &&
+        Objects.equals(this.shipDate, order.shipDate) &&
+        Objects.equals(this.status, order.status) &&
+        Objects.equals(this.complete, order.complete);
   }
 
   @Override
@@ -172,3 +167,4 @@ public enum StatusEnum {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

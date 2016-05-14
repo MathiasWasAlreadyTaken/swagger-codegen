@@ -18,8 +18,6 @@ import io.swagger.models.properties.StringProperty;
 import java.io.File;
 import java.util.*;
 
-import org.apache.commons.lang.StringUtils;
-
 public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfig {
     protected String sourceFolder = "cpprestapi";
     protected Map<String, String> namespaces = new HashMap<String, String>();
@@ -385,7 +383,7 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
     @Override
     public String toOperationId(String operationId) {
         // throw exception if method name is empty
-        if (StringUtils.isEmpty(operationId)) {
+        if (operationId.isEmpty()) {
             throw new RuntimeException("Empty method name (operationId) not allowed");
         }
 

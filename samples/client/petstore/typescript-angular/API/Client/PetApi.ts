@@ -27,23 +27,21 @@ namespace API.Client {
         }
 
         /**
-         * Update an existing pet
+         * Add a new pet to the store
          * 
          * @param body Pet object that needs to be added to the store
          */
-        public updatePet (body?: Pet, extraHttpRequestParams?: any ) : ng.IHttpPromise<{}> {
-            const path = this.basePath + '/pet';
+        public addPet (body?: Pet, extraHttpRequestParams?: any ) : ng.IHttpPromise<{}> {
+            const localVarPath = this.basePath + '/pet';
 
             let queryParameters: any = {};
             let headerParams: any = this.extendObj({}, this.defaultHeaders);
             let httpRequestParams: any = {
-                method: 'PUT',
-                url: path,
+                method: 'POST',
+                url: localVarPath,
                 json: true,
                 data: body,
-                
-                
-                params: queryParameters,
+                                params: queryParameters,
                 headers: headerParams
             };
 
@@ -54,23 +52,28 @@ namespace API.Client {
             return this.$http(httpRequestParams);
         }
         /**
-         * Add a new pet to the store
+         * Deletes a pet
          * 
-         * @param body Pet object that needs to be added to the store
+         * @param petId Pet id to delete
+         * @param apiKey 
          */
-        public addPet (body?: Pet, extraHttpRequestParams?: any ) : ng.IHttpPromise<{}> {
-            const path = this.basePath + '/pet';
+        public deletePet (petId: number, apiKey?: string, extraHttpRequestParams?: any ) : ng.IHttpPromise<{}> {
+            const localVarPath = this.basePath + '/pet/{petId}'
+                .replace('{' + 'petId' + '}', String(petId));
 
             let queryParameters: any = {};
             let headerParams: any = this.extendObj({}, this.defaultHeaders);
+            // verify required parameter 'petId' is set
+            if (!petId) {
+                throw new Error('Missing required parameter petId when calling deletePet');
+            }
+            headerParams['api_key'] = apiKey;
+
             let httpRequestParams: any = {
-                method: 'POST',
-                url: path,
+                method: 'DELETE',
+                url: localVarPath,
                 json: true,
-                data: body,
-                
-                
-                params: queryParameters,
+                                                params: queryParameters,
                 headers: headerParams
             };
 
@@ -86,7 +89,7 @@ namespace API.Client {
          * @param status Status values that need to be considered for filter
          */
         public findPetsByStatus (status?: Array<string>, extraHttpRequestParams?: any ) : ng.IHttpPromise<Array<Pet>> {
-            const path = this.basePath + '/pet/findByStatus';
+            const localVarPath = this.basePath + '/pet/findByStatus';
 
             let queryParameters: any = {};
             let headerParams: any = this.extendObj({}, this.defaultHeaders);
@@ -96,11 +99,9 @@ namespace API.Client {
 
             let httpRequestParams: any = {
                 method: 'GET',
-                url: path,
+                url: localVarPath,
                 json: true,
-                
-                
-                params: queryParameters,
+                                                params: queryParameters,
                 headers: headerParams
             };
 
@@ -116,7 +117,7 @@ namespace API.Client {
          * @param tags Tags to filter by
          */
         public findPetsByTags (tags?: Array<string>, extraHttpRequestParams?: any ) : ng.IHttpPromise<Array<Pet>> {
-            const path = this.basePath + '/pet/findByTags';
+            const localVarPath = this.basePath + '/pet/findByTags';
 
             let queryParameters: any = {};
             let headerParams: any = this.extendObj({}, this.defaultHeaders);
@@ -126,11 +127,9 @@ namespace API.Client {
 
             let httpRequestParams: any = {
                 method: 'GET',
-                url: path,
+                url: localVarPath,
                 json: true,
-                
-                
-                params: queryParameters,
+                                                params: queryParameters,
                 headers: headerParams
             };
 
@@ -146,7 +145,7 @@ namespace API.Client {
          * @param petId ID of pet that needs to be fetched
          */
         public getPetById (petId: number, extraHttpRequestParams?: any ) : ng.IHttpPromise<Pet> {
-            const path = this.basePath + '/pet/{petId}'
+            const localVarPath = this.basePath + '/pet/{petId}'
                 .replace('{' + 'petId' + '}', String(petId));
 
             let queryParameters: any = {};
@@ -157,11 +156,34 @@ namespace API.Client {
             }
             let httpRequestParams: any = {
                 method: 'GET',
-                url: path,
+                url: localVarPath,
                 json: true,
-                
-                
-                params: queryParameters,
+                                                params: queryParameters,
+                headers: headerParams
+            };
+
+            if (extraHttpRequestParams) {
+                httpRequestParams = this.extendObj(httpRequestParams, extraHttpRequestParams);
+            }
+
+            return this.$http(httpRequestParams);
+        }
+        /**
+         * Update an existing pet
+         * 
+         * @param body Pet object that needs to be added to the store
+         */
+        public updatePet (body?: Pet, extraHttpRequestParams?: any ) : ng.IHttpPromise<{}> {
+            const localVarPath = this.basePath + '/pet';
+
+            let queryParameters: any = {};
+            let headerParams: any = this.extendObj({}, this.defaultHeaders);
+            let httpRequestParams: any = {
+                method: 'PUT',
+                url: localVarPath,
+                json: true,
+                data: body,
+                                params: queryParameters,
                 headers: headerParams
             };
 
@@ -179,7 +201,7 @@ namespace API.Client {
          * @param status Updated status of the pet
          */
         public updatePetWithForm (petId: string, name?: string, status?: string, extraHttpRequestParams?: any ) : ng.IHttpPromise<{}> {
-            const path = this.basePath + '/pet/{petId}'
+            const localVarPath = this.basePath + '/pet/{petId}'
                 .replace('{' + 'petId' + '}', String(petId));
 
             let queryParameters: any = {};
@@ -198,45 +220,9 @@ namespace API.Client {
 
             let httpRequestParams: any = {
                 method: 'POST',
-                url: path,
+                url: localVarPath,
                 json: false,
-                
-                data: this.$httpParamSerializer(formParams),
-                
-                params: queryParameters,
-                headers: headerParams
-            };
-
-            if (extraHttpRequestParams) {
-                httpRequestParams = this.extendObj(httpRequestParams, extraHttpRequestParams);
-            }
-
-            return this.$http(httpRequestParams);
-        }
-        /**
-         * Deletes a pet
-         * 
-         * @param petId Pet id to delete
-         * @param apiKey 
-         */
-        public deletePet (petId: number, apiKey?: string, extraHttpRequestParams?: any ) : ng.IHttpPromise<{}> {
-            const path = this.basePath + '/pet/{petId}'
-                .replace('{' + 'petId' + '}', String(petId));
-
-            let queryParameters: any = {};
-            let headerParams: any = this.extendObj({}, this.defaultHeaders);
-            // verify required parameter 'petId' is set
-            if (!petId) {
-                throw new Error('Missing required parameter petId when calling deletePet');
-            }
-            headerParams['api_key'] = apiKey;
-
-            let httpRequestParams: any = {
-                method: 'DELETE',
-                url: path,
-                json: true,
-                
-                
+                                data: this.$httpParamSerializer(formParams),
                 params: queryParameters,
                 headers: headerParams
             };
@@ -255,7 +241,7 @@ namespace API.Client {
          * @param file file to upload
          */
         public uploadFile (petId: number, additionalMetadata?: string, file?: any, extraHttpRequestParams?: any ) : ng.IHttpPromise<{}> {
-            const path = this.basePath + '/pet/{petId}/uploadImage'
+            const localVarPath = this.basePath + '/pet/{petId}/uploadImage'
                 .replace('{' + 'petId' + '}', String(petId));
 
             let queryParameters: any = {};
@@ -274,11 +260,9 @@ namespace API.Client {
 
             let httpRequestParams: any = {
                 method: 'POST',
-                url: path,
+                url: localVarPath,
                 json: false,
-                
-                data: this.$httpParamSerializer(formParams),
-                
+                                data: this.$httpParamSerializer(formParams),
                 params: queryParameters,
                 headers: headerParams
             };

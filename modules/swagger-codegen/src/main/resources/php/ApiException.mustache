@@ -10,7 +10,7 @@
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 /**
- *  Copyright 2015 SmartBear Software
+ *  Copyright 2016 SmartBear Software
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -48,24 +48,28 @@ class ApiException extends Exception
 
     /**
      * The HTTP body of the server response either as Json or string.
+     *
      * @var mixed
      */
     protected $responseBody;
 
     /**
      * The HTTP header of the server response.
+     *
      * @var string[]
      */
     protected $responseHeaders;
 
     /**
      * The deserialized response object
+     *
      * @var $responseObject;
      */
     protected $responseObject;
 
     /**
      * Constructor
+     *
      * @param string $message         Error message
      * @param int    $code            HTTP status code
      * @param string $responseHeaders HTTP response header
@@ -100,7 +104,9 @@ class ApiException extends Exception
 
     /**
      * Sets the deseralized response object (during deserialization)
+     *
      * @param mixed $obj Deserialized response object
+     *
      * @return void
      */
     public function setResponseObject($obj)
