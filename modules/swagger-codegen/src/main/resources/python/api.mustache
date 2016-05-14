@@ -2,7 +2,7 @@
 
 """
 {{classname}}.py
-Copyright 2015 SmartBear Software
+Copyright 2016 SmartBear Software
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ from __future__ import absolute_import
 
 import sys
 import os
+import re
 
 # python 2 and python 3 compatibility library
 from six import iteritems
@@ -47,7 +48,7 @@ class {{classname}}(object):
             self.api_client = config.api_client
 {{#operation}}
 
-    def {{nickname}}(self, {{#sortParamsByRequiredFlag}}{{#allParams}}{{#required}}{{paramName}}, {{/required}}{{/allParams}}{{/sortParamsByRequiredFlag}}**kwargs):
+    def {{operationId}}(self, {{#sortParamsByRequiredFlag}}{{#allParams}}{{#required}}{{paramName}}, {{/required}}{{/allParams}}{{/sortParamsByRequiredFlag}}**kwargs):
         """
         {{{summary}}}
         {{{notes}}}
@@ -59,16 +60,16 @@ class {{classname}}(object):
         >>>     pprint(response)
         >>>
 {{#sortParamsByRequiredFlag}}
-        >>> thread = api.{{nickname}}({{#allParams}}{{#required}}{{paramName}}, {{/required}}{{/allParams}}callback=callback_function)
+        >>> thread = api.{{operationId}}({{#allParams}}{{#required}}{{paramName}}, {{/required}}{{/allParams}}callback=callback_function)
 {{/sortParamsByRequiredFlag}}
 {{^sortParamsByRequiredFlag}}
-        >>> thread = api.{{nickname}}({{#allParams}}{{#required}}{{paramName}}={{paramName}}_value, {{/required}}{{/allParams}}callback=callback_function)
+        >>> thread = api.{{operationId}}({{#allParams}}{{#required}}{{paramName}}={{paramName}}_value, {{/required}}{{/allParams}}callback=callback_function)
 {{/sortParamsByRequiredFlag}}
 
         :param callback function: The callback function
             for asynchronous request. (optional)
 {{#allParams}}
-        :param {{dataType}} {{paramName}}: {{{description}}}{{#required}} (required){{/required}}{{#optional}}(optional){{/optional}}
+        :param {{dataType}} {{paramName}}: {{{description}}}{{#required}} (required){{/required}}{{#optional}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/optional}}
 {{/allParams}}
         :return: {{#returnType}}{{returnType}}{{/returnType}}{{^returnType}}None{{/returnType}}
                  If the method is called asynchronously,
@@ -83,7 +84,7 @@ class {{classname}}(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method {{nickname}}" % key
+                    " to method {{operationId}}" % key
                 )
             params[key] = val
         del params['kwargs']
@@ -92,13 +93,36 @@ class {{classname}}(object):
 {{#required}}
         # verify the required parameter '{{paramName}}' is set
         if ('{{paramName}}' not in params) or (params['{{paramName}}'] is None):
-            raise ValueError("Missing the required parameter `{{paramName}}` when calling `{{nickname}}`")
+            raise ValueError("Missing the required parameter `{{paramName}}` when calling `{{operationId}}`")
 {{/required}}
 {{/allParams}}
 
-        resource_path = '{{path}}'.replace('{format}', 'json')
-        method = '{{httpMethod}}'
+{{#allParams}}
+{{#hasValidation}}
+    {{#maxLength}}
+        if '{{paramName}}' in params and len(params['{{paramName}}']) > {{maxLength}}: 
+            raise ValueError("Invalid value for parameter `{{paramName}}` when calling `{{operationId}}`, length must be less than or equal to `{{maxLength}}`")
+    {{/maxLength}}
+    {{#minLength}}
+        if '{{paramName}}' in params and len(params['{{paramName}}']) < {{minLength}}: 
+            raise ValueError("Invalid value for parameter `{{paramName}}` when calling `{{operationId}}`, length must be greater than or equal to `{{minLength}}`")
+    {{/minLength}}
+    {{#maximum}}
+        if '{{paramName}}' in params and params['{{paramName}}'] > {{maximum}}: 
+            raise ValueError("Invalid value for parameter `{{paramName}}` when calling `{{operationId}}`, must be a value less than or equal to  `{{maximum}}`")
+    {{/maximum}}
+    {{#minimum}}
+        if '{{paramName}}' in params and params['{{paramName}}'] < {{minimum}}: 
+            raise ValueError("Invalid value for parameter `{{paramName}}` when calling `{{operationId}}`, must be a value greater than or equal to `{{minimum}}`")
+    {{/minimum}}
+    {{#pattern}}
+        if '{{paramName}}' in params and not re.search('{{vendorExtensions.x-regex}}', params['{{paramName}}']{{#vendorExtensions.x-modifiers}}{{#-first}}, flags={{/-first}}re.{{.}}{{^-last}} | {{/-last}}{{/vendorExtensions.x-modifiers}}): 
+            raise ValueError("Invalid value for parameter `{{paramName}}` when calling `{{operationId}}`, must conform to the pattern `{{pattern}}`")
+    {{/pattern}}
+{{/hasValidation}}
+{{/allParams}}
 
+        resource_path = '{{path}}'.replace('{format}', 'json')
         path_params = {}
 {{#pathParams}}
         if '{{paramName}}' in params:
@@ -117,11 +141,11 @@ class {{classname}}(object):
             header_params['{{baseName}}'] = params['{{paramName}}']
 {{/headerParams}}
 
-        form_params = {}
-        files = {}
+        form_params = []
+        local_var_files = {}
 {{#formParams}}
         if '{{paramName}}' in params:
-            {{#notFile}}form_params['{{baseName}}'] = params['{{paramName}}']{{/notFile}}{{#isFile}}files['{{baseName}}'] = params['{{paramName}}']{{/isFile}}
+            {{#notFile}}form_params.append(('{{baseName}}', params['{{paramName}}'])){{/notFile}}{{#isFile}}local_var_files['{{baseName}}'] = params['{{paramName}}']{{/isFile}}
 {{/formParams}}
 
         body_params = None
@@ -143,13 +167,13 @@ class {{classname}}(object):
         # Authentication setting
         auth_settings = [{{#authMethods}}'{{name}}'{{#hasMore}}, {{/hasMore}}{{/authMethods}}]
 
-        response = self.api_client.call_api(resource_path, method,
+        response = self.api_client.call_api(resource_path, '{{httpMethod}}',
                                             path_params,
                                             query_params,
                                             header_params,
                                             body=body_params,
                                             post_params=form_params,
-                                            files=files,
+                                            files=local_var_files,
                                             response_type={{#returnType}}'{{returnType}}'{{/returnType}}{{^returnType}}None{{/returnType}},
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))

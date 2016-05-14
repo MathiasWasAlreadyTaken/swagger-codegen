@@ -1,17 +1,18 @@
 package io.swagger.client.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
-import java.util.Objects;
 
 
+/**
+ * Order
+ */
 
-
-
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2015-12-31T12:17:07.711+08:00")
 public class Order   {
   
   private Long id = null;
@@ -19,7 +20,9 @@ public class Order   {
   private Integer quantity = null;
   private Date shipDate = null;
 
-
+  /**
+   * Order Status
+   */
   public enum StatusEnum {
     PLACED("placed"),
     APPROVED("approved"),
@@ -34,18 +37,22 @@ public class Order   {
     @Override
     @JsonValue
     public String toString() {
-      return value;
+      return String.valueOf(value);
     }
   }
 
   private StatusEnum status = null;
-  private Boolean complete = null;
+  private Boolean complete = false;
 
   
   /**
    **/
+  public Order id(Long id) {
+    this.id = id;
+    return this;
+  }
   
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "null", value = "")
   @JsonProperty("id")
   public Long getId() {
     return id;
@@ -54,11 +61,15 @@ public class Order   {
     this.id = id;
   }
 
-  
+
   /**
    **/
+  public Order petId(Long petId) {
+    this.petId = petId;
+    return this;
+  }
   
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "null", value = "")
   @JsonProperty("petId")
   public Long getPetId() {
     return petId;
@@ -67,11 +78,15 @@ public class Order   {
     this.petId = petId;
   }
 
-  
+
   /**
    **/
+  public Order quantity(Integer quantity) {
+    this.quantity = quantity;
+    return this;
+  }
   
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "null", value = "")
   @JsonProperty("quantity")
   public Integer getQuantity() {
     return quantity;
@@ -80,11 +95,15 @@ public class Order   {
     this.quantity = quantity;
   }
 
-  
+
   /**
    **/
+  public Order shipDate(Date shipDate) {
+    this.shipDate = shipDate;
+    return this;
+  }
   
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "null", value = "")
   @JsonProperty("shipDate")
   public Date getShipDate() {
     return shipDate;
@@ -93,12 +112,16 @@ public class Order   {
     this.shipDate = shipDate;
   }
 
-  
+
   /**
    * Order Status
    **/
+  public Order status(StatusEnum status) {
+    this.status = status;
+    return this;
+  }
   
-  @ApiModelProperty(value = "Order Status")
+  @ApiModelProperty(example = "null", value = "Order Status")
   @JsonProperty("status")
   public StatusEnum getStatus() {
     return status;
@@ -107,11 +130,15 @@ public class Order   {
     this.status = status;
   }
 
-  
+
   /**
    **/
+  public Order complete(Boolean complete) {
+    this.complete = complete;
+    return this;
+  }
   
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "null", value = "")
   @JsonProperty("complete")
   public Boolean getComplete() {
     return complete;
@@ -120,10 +147,9 @@ public class Order   {
     this.complete = complete;
   }
 
-  
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -131,12 +157,12 @@ public class Order   {
       return false;
     }
     Order order = (Order) o;
-    return Objects.equals(id, order.id) &&
-        Objects.equals(petId, order.petId) &&
-        Objects.equals(quantity, order.quantity) &&
-        Objects.equals(shipDate, order.shipDate) &&
-        Objects.equals(status, order.status) &&
-        Objects.equals(complete, order.complete);
+    return Objects.equals(this.id, order.id) &&
+        Objects.equals(this.petId, order.petId) &&
+        Objects.equals(this.quantity, order.quantity) &&
+        Objects.equals(this.shipDate, order.shipDate) &&
+        Objects.equals(this.status, order.status) &&
+        Objects.equals(this.complete, order.complete);
   }
 
   @Override
@@ -163,7 +189,7 @@ public class Order   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

@@ -21,32 +21,30 @@
 +(SWGPetApi*) sharedAPI;
 ///
 ///
-/// Update an existing pet
-/// 
-///
-/// @param body Pet object that needs to be added to the store
-/// 
-///
-/// @return 
--(NSNumber*) updatePetWithCompletionBlock :(SWGPet*) body 
-    
-    
-    completionHandler: (void (^)(NSError* error))completionBlock;
-
-
-///
-///
 /// Add a new pet to the store
 /// 
 ///
-/// @param body Pet object that needs to be added to the store
+/// @param body Pet object that needs to be added to the store (optional)
 /// 
 ///
 /// @return 
--(NSNumber*) addPetWithCompletionBlock :(SWGPet*) body 
-    
-    
-    completionHandler: (void (^)(NSError* error))completionBlock;
+-(NSNumber*) addPetWithBody: (SWGPet*) body
+    completionHandler: (void (^)(NSError* error)) handler;
+
+
+///
+///
+/// Deletes a pet
+/// 
+///
+/// @param petId Pet id to delete
+/// @param apiKey  (optional)
+/// 
+///
+/// @return 
+-(NSNumber*) deletePetWithPetId: (NSNumber*) petId
+    apiKey: (NSString*) apiKey
+    completionHandler: (void (^)(NSError* error)) handler;
 
 
 ///
@@ -54,14 +52,12 @@
 /// Finds Pets by status
 /// Multiple status values can be provided with comma seperated strings
 ///
-/// @param status Status values that need to be considered for filter
+/// @param status Status values that need to be considered for filter (optional) (default to available)
 /// 
 ///
 /// @return NSArray<SWGPet>*
--(NSNumber*) findPetsByStatusWithCompletionBlock :(NSArray* /* NSString */) status 
-    
-    completionHandler: (void (^)(NSArray<SWGPet>* output, NSError* error))completionBlock;
-    
+-(NSNumber*) findPetsByStatusWithStatus: (NSArray<NSString*>*) status
+    completionHandler: (void (^)(NSArray<SWGPet>* output, NSError* error)) handler;
 
 
 ///
@@ -69,14 +65,12 @@
 /// Finds Pets by tags
 /// Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.
 ///
-/// @param tags Tags to filter by
+/// @param tags Tags to filter by (optional)
 /// 
 ///
 /// @return NSArray<SWGPet>*
--(NSNumber*) findPetsByTagsWithCompletionBlock :(NSArray* /* NSString */) tags 
-    
-    completionHandler: (void (^)(NSArray<SWGPet>* output, NSError* error))completionBlock;
-    
+-(NSNumber*) findPetsByTagsWithTags: (NSArray<NSString*>*) tags
+    completionHandler: (void (^)(NSArray<SWGPet>* output, NSError* error)) handler;
 
 
 ///
@@ -88,10 +82,21 @@
 /// 
 ///
 /// @return SWGPet*
--(NSNumber*) getPetByIdWithCompletionBlock :(NSNumber*) petId 
-    
-    completionHandler: (void (^)(SWGPet* output, NSError* error))completionBlock;
-    
+-(NSNumber*) getPetByIdWithPetId: (NSNumber*) petId
+    completionHandler: (void (^)(SWGPet* output, NSError* error)) handler;
+
+
+///
+///
+/// Update an existing pet
+/// 
+///
+/// @param body Pet object that needs to be added to the store (optional)
+/// 
+///
+/// @return 
+-(NSNumber*) updatePetWithBody: (SWGPet*) body
+    completionHandler: (void (^)(NSError* error)) handler;
 
 
 ///
@@ -100,34 +105,15 @@
 /// 
 ///
 /// @param petId ID of pet that needs to be updated
-/// @param name Updated name of the pet
-/// @param status Updated status of the pet
+/// @param name Updated name of the pet (optional)
+/// @param status Updated status of the pet (optional)
 /// 
 ///
 /// @return 
--(NSNumber*) updatePetWithFormWithCompletionBlock :(NSString*) petId 
-     name:(NSString*) name 
-     status:(NSString*) status 
-    
-    
-    completionHandler: (void (^)(NSError* error))completionBlock;
-
-
-///
-///
-/// Deletes a pet
-/// 
-///
-/// @param petId Pet id to delete
-/// @param apiKey 
-/// 
-///
-/// @return 
--(NSNumber*) deletePetWithCompletionBlock :(NSNumber*) petId 
-     apiKey:(NSString*) apiKey 
-    
-    
-    completionHandler: (void (^)(NSError* error))completionBlock;
+-(NSNumber*) updatePetWithFormWithPetId: (NSString*) petId
+    name: (NSString*) name
+    status: (NSString*) status
+    completionHandler: (void (^)(NSError* error)) handler;
 
 
 ///
@@ -136,17 +122,15 @@
 /// 
 ///
 /// @param petId ID of pet to update
-/// @param additionalMetadata Additional data to pass to server
-/// @param file file to upload
+/// @param additionalMetadata Additional data to pass to server (optional)
+/// @param file file to upload (optional)
 /// 
 ///
 /// @return 
--(NSNumber*) uploadFileWithCompletionBlock :(NSNumber*) petId 
-     additionalMetadata:(NSString*) additionalMetadata 
-     file:(NSURL*) file 
-    
-    
-    completionHandler: (void (^)(NSError* error))completionBlock;
+-(NSNumber*) uploadFileWithPetId: (NSNumber*) petId
+    additionalMetadata: (NSString*) additionalMetadata
+    file: (NSURL*) file
+    completionHandler: (void (^)(NSError* error)) handler;
 
 
 

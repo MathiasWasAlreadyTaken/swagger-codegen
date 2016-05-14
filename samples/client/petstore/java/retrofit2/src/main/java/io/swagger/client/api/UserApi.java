@@ -2,21 +2,24 @@ package io.swagger.client.api;
 
 import io.swagger.client.CollectionFormats.*;
 
-import retrofit.Call;
-import retrofit.http.*;
-import com.squareup.okhttp.RequestBody;
+
+import retrofit2.Call;
+import retrofit2.http.*;
+
+import okhttp3.RequestBody;
 
 import io.swagger.client.model.User;
-import java.util.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public interface UserApi {
-  
   /**
    * Create user
    * This can only be done by the logged in user.
-   * @param body Created user object
+   * @param body Created user object (required)
    * @return Call<Void>
    */
   
@@ -25,11 +28,10 @@ public interface UserApi {
     @Body User body
   );
 
-  
   /**
    * Creates list of users with given input array
    * 
-   * @param body List of user object
+   * @param body List of user object (required)
    * @return Call<Void>
    */
   
@@ -38,11 +40,10 @@ public interface UserApi {
     @Body List<User> body
   );
 
-  
   /**
    * Creates list of users with given input array
    * 
-   * @param body List of user object
+   * @param body List of user object (required)
    * @return Call<Void>
    */
   
@@ -51,12 +52,35 @@ public interface UserApi {
     @Body List<User> body
   );
 
+  /**
+   * Delete user
+   * This can only be done by the logged in user.
+   * @param username The name that needs to be deleted (required)
+   * @return Call<Void>
+   */
   
+  @DELETE("user/{username}")
+  Call<Void> deleteUser(
+    @Path("username") String username
+  );
+
+  /**
+   * Get user by user name
+   * 
+   * @param username The name that needs to be fetched. Use user1 for testing.  (required)
+   * @return Call<User>
+   */
+  
+  @GET("user/{username}")
+  Call<User> getUserByName(
+    @Path("username") String username
+  );
+
   /**
    * Logs user into the system
    * 
-   * @param username The user name for login
-   * @param password The password for login in clear text
+   * @param username The user name for login (required)
+   * @param password The password for login in clear text (required)
    * @return Call<String>
    */
   
@@ -65,7 +89,6 @@ public interface UserApi {
     @Query("username") String username, @Query("password") String password
   );
 
-  
   /**
    * Logs out current logged in user session
    * 
@@ -76,25 +99,11 @@ public interface UserApi {
   Call<Void> logoutUser();
     
 
-  
-  /**
-   * Get user by user name
-   * 
-   * @param username The name that needs to be fetched. Use user1 for testing.
-   * @return Call<User>
-   */
-  
-  @GET("user/{username}")
-  Call<User> getUserByName(
-    @Path("username") String username
-  );
-
-  
   /**
    * Updated user
    * This can only be done by the logged in user.
-   * @param username name that need to be deleted
-   * @param body Updated user object
+   * @param username name that need to be deleted (required)
+   * @param body Updated user object (required)
    * @return Call<Void>
    */
   
@@ -103,18 +112,4 @@ public interface UserApi {
     @Path("username") String username, @Body User body
   );
 
-  
-  /**
-   * Delete user
-   * This can only be done by the logged in user.
-   * @param username The name that needs to be deleted
-   * @return Call<Void>
-   */
-  
-  @DELETE("user/{username}")
-  Call<Void> deleteUser(
-    @Path("username") String username
-  );
-
-  
 }

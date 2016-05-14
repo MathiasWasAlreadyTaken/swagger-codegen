@@ -1,25 +1,23 @@
 package io.swagger.client.model;
 
+import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.Objects;
 
 import com.google.gson.annotations.SerializedName;
 
 
-
-
-@ApiModel(description = "")
+/**
+ * Tag
+ */
 public class Tag   {
   
   @SerializedName("id")
   private Long id = null;
-  
+
   @SerializedName("name")
   private String name = null;
-  
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -30,7 +28,6 @@ public class Tag   {
     this.id = id;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -41,7 +38,6 @@ public class Tag   {
     this.name = name;
   }
 
-  
 
   @Override
   public boolean equals(Object o) {
@@ -52,8 +48,8 @@ public class Tag   {
       return false;
     }
     Tag tag = (Tag) o;
-    return Objects.equals(id, tag.id) &&
-        Objects.equals(name, tag.name);
+    return Objects.equals(this.id, tag.id) &&
+        Objects.equals(this.name, tag.name);
   }
 
   @Override
@@ -83,3 +79,4 @@ public class Tag   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

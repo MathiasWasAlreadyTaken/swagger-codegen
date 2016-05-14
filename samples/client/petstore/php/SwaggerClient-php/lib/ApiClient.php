@@ -11,7 +11,7 @@
  * @link     https://github.com/swagger-api/swagger-codegen
  */
 /**
- *  Copyright 2015 SmartBear Software
+ *  Copyright 2016 SmartBear Software
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ class ApiClient
      * Constructor of the class
      * @param Configuration $config config for this ApiClient
      */
-    public function __construct(Configuration $config = null)
+    public function __construct(\Swagger\Client\Configuration $config = null)
     {
         if ($config == null) {
             $config = Configuration::getDefaultConfiguration();
@@ -150,7 +150,7 @@ class ApiClient
         if ($postData and in_array('Content-Type: application/x-www-form-urlencoded', $headers)) {
             $postData = http_build_query($postData);
         } elseif ((is_object($postData) or is_array($postData)) and !in_array('Content-Type: multipart/form-data', $headers)) { // json model
-            $postData = json_encode($this->serializer->sanitizeForSerialization($postData));
+            $postData = json_encode(\Swagger\Client\ObjectSerializer::sanitizeForSerialization($postData));
         }
 
         $url = $this->config->getHost() . $resourcePath;
@@ -230,7 +230,7 @@ class ApiClient
             throw new ApiException("API call to $url timed out: ".serialize($response_info), 0, null, null);
         } elseif ($response_info['http_code'] >= 200 && $response_info['http_code'] <= 299 ) {
             // return raw body if response is a file
-            if ($responseType == '\SplFileObject') {
+            if ($responseType == '\SplFileObject' || $responseType == 'string') {
                 return array($http_body, $response_info['http_code'], $http_header);
             }
 
@@ -259,7 +259,7 @@ class ApiClient
      *
      * @return string Accept (e.g. application/json)
      */
-    public static function selectHeaderAccept($accept)
+    public function selectHeaderAccept($accept)
     {
         if (count($accept) === 0 or (count($accept) === 1 and $accept[0] === '')) {
             return null;
@@ -277,7 +277,7 @@ class ApiClient
      *
      * @return string Content-Type (e.g. application/json)
      */
-    public static function selectHeaderContentType($content_type)
+    public function selectHeaderContentType($content_type)
     {
         if (count($content_type) === 0 or (count($content_type) === 1 and $content_type[0] === '')) {
             return 'application/json';
@@ -299,9 +299,9 @@ class ApiClient
     {
         // ref/credit: http://php.net/manual/en/function.http-parse-headers.php#112986
         $headers = array();
-        $key = ''; // [+]
+        $key = '';
    
-        foreach(explode("\n", $raw_headers) as $i => $h)
+        foreach(explode("\n", $raw_headers) as $h)
         {
             $h = explode(':', $h, 2);
    
@@ -311,26 +311,22 @@ class ApiClient
                     $headers[$h[0]] = trim($h[1]);
                 elseif (is_array($headers[$h[0]]))
                 {
-                    // $tmp = array_merge($headers[$h[0]], array(trim($h[1]))); // [-]
-                    // $headers[$h[0]] = $tmp; // [-]
-                    $headers[$h[0]] = array_merge($headers[$h[0]], array(trim($h[1]))); // [+]
+                    $headers[$h[0]] = array_merge($headers[$h[0]], array(trim($h[1])));
                 }
                 else
                 {
-                    // $tmp = array_merge(array($headers[$h[0]]), array(trim($h[1]))); // [-]
-                    // $headers[$h[0]] = $tmp; // [-]
-                    $headers[$h[0]] = array_merge(array($headers[$h[0]]), array(trim($h[1]))); // [+]
+                    $headers[$h[0]] = array_merge(array($headers[$h[0]]), array(trim($h[1])));
                 }
    
-                $key = $h[0]; // [+]
+                $key = $h[0];
             }
-            else // [+]
-            { // [+]
-                if (substr($h[0], 0, 1) == "\t") // [+]
-                    $headers[$key] .= "\r\n\t".trim($h[0]); // [+]
-                elseif (!$key) // [+]
-                    $headers[0] = trim($h[0]);trim($h[0]); // [+]
-            } // [+]
+            else
+            {
+                if (substr($h[0], 0, 1) == "\t") 
+                    $headers[$key] .= "\r\n\t".trim($h[0]); 
+                elseif (!$key)
+                    $headers[0] = trim($h[0]);trim($h[0]);
+            }
         }
    
         return $headers;

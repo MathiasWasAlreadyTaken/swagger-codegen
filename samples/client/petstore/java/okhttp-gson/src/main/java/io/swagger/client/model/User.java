@@ -1,43 +1,41 @@
 package io.swagger.client.model;
 
+import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.Objects;
 
 import com.google.gson.annotations.SerializedName;
 
 
-
-
-@ApiModel(description = "")
+/**
+ * User
+ */
 public class User   {
   
   @SerializedName("id")
   private Long id = null;
-  
+
   @SerializedName("username")
   private String username = null;
-  
+
   @SerializedName("firstName")
   private String firstName = null;
-  
+
   @SerializedName("lastName")
   private String lastName = null;
-  
+
   @SerializedName("email")
   private String email = null;
-  
+
   @SerializedName("password")
   private String password = null;
-  
+
   @SerializedName("phone")
   private String phone = null;
-  
+
   @SerializedName("userStatus")
   private Integer userStatus = null;
-  
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -48,7 +46,6 @@ public class User   {
     this.id = id;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -59,7 +56,6 @@ public class User   {
     this.username = username;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -70,7 +66,6 @@ public class User   {
     this.firstName = firstName;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -81,7 +76,6 @@ public class User   {
     this.lastName = lastName;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -92,7 +86,6 @@ public class User   {
     this.email = email;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -103,7 +96,6 @@ public class User   {
     this.password = password;
   }
 
-  
   /**
    **/
   @ApiModelProperty(value = "")
@@ -114,7 +106,6 @@ public class User   {
     this.phone = phone;
   }
 
-  
   /**
    * User Status
    **/
@@ -126,7 +117,6 @@ public class User   {
     this.userStatus = userStatus;
   }
 
-  
 
   @Override
   public boolean equals(Object o) {
@@ -137,14 +127,14 @@ public class User   {
       return false;
     }
     User user = (User) o;
-    return Objects.equals(id, user.id) &&
-        Objects.equals(username, user.username) &&
-        Objects.equals(firstName, user.firstName) &&
-        Objects.equals(lastName, user.lastName) &&
-        Objects.equals(email, user.email) &&
-        Objects.equals(password, user.password) &&
-        Objects.equals(phone, user.phone) &&
-        Objects.equals(userStatus, user.userStatus);
+    return Objects.equals(this.id, user.id) &&
+        Objects.equals(this.username, user.username) &&
+        Objects.equals(this.firstName, user.firstName) &&
+        Objects.equals(this.lastName, user.lastName) &&
+        Objects.equals(this.email, user.email) &&
+        Objects.equals(this.password, user.password) &&
+        Objects.equals(this.phone, user.phone) &&
+        Objects.equals(this.userStatus, user.userStatus);
   }
 
   @Override
@@ -180,3 +170,4 @@ public class User   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

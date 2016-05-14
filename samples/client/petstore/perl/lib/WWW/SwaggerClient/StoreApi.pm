@@ -1,5 +1,5 @@
 #
-# Copyright 2015 SmartBear Software
+# Copyright 2016 SmartBear Software
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,208 +52,6 @@ sub new {
 
 
 #
-# get_inventory
-#
-# Returns pet inventories by status
-# 
-{
-    my $params = {
-    };
-    __PACKAGE__->method_documentation->{ get_inventory } = { 
-    	summary => 'Returns pet inventories by status',
-        params => $params,
-        returns => 'HASH[string,int]',
-        };
-}
-# @return HASH[string,int]
-#
-sub get_inventory {
-    my ($self, %args) = @_;
-
-    
-
-    # parse inputs
-    my $_resource_path = '/store/inventory';
-    $_resource_path =~ s/{format}/json/; # default format to json
-
-    my $_method = 'GET';
-    my $query_params = {};
-    my $header_params = {};
-    my $form_params = {};
-
-    # 'Accept' and 'Content-Type' header
-    my $_header_accept = $self->{api_client}->select_header_accept('application/json', 'application/xml');
-    if ($_header_accept) {
-        $header_params->{'Accept'} = $_header_accept;
-    }
-    $header_params->{'Content-Type'} = $self->{api_client}->select_header_content_type();
-
-    
-    
-    
-    
-    my $_body_data;
-    
-
-    # authentication setting, if any
-    my $auth_settings = [qw(api_key )];
-
-    # make the API Call
-    my $response = $self->{api_client}->call_api($_resource_path, $_method,
-                                           $query_params, $form_params,
-                                           $header_params, $_body_data, $auth_settings);
-    if (!$response) {
-        return;
-    }
-    my $_response_object = $self->{api_client}->deserialize('HASH[string,int]', $response);
-    return $_response_object;
-    
-}
-
-#
-# place_order
-#
-# Place an order for a pet
-# 
-# @param Order $body order placed for purchasing the pet (optional)
-{
-    my $params = {
-    'body' => {
-        data_type => 'Order',
-        description => 'order placed for purchasing the pet',
-        required => '0',
-    },
-    };
-    __PACKAGE__->method_documentation->{ place_order } = { 
-    	summary => 'Place an order for a pet',
-        params => $params,
-        returns => 'Order',
-        };
-}
-# @return Order
-#
-sub place_order {
-    my ($self, %args) = @_;
-
-    
-
-    # parse inputs
-    my $_resource_path = '/store/order';
-    $_resource_path =~ s/{format}/json/; # default format to json
-
-    my $_method = 'POST';
-    my $query_params = {};
-    my $header_params = {};
-    my $form_params = {};
-
-    # 'Accept' and 'Content-Type' header
-    my $_header_accept = $self->{api_client}->select_header_accept('application/json', 'application/xml');
-    if ($_header_accept) {
-        $header_params->{'Accept'} = $_header_accept;
-    }
-    $header_params->{'Content-Type'} = $self->{api_client}->select_header_content_type();
-
-    
-    
-    
-    
-    my $_body_data;
-    # body params
-    if ( exists $args{'body'}) {
-        $_body_data = $args{'body'};
-    }
-
-    # authentication setting, if any
-    my $auth_settings = [qw()];
-
-    # make the API Call
-    my $response = $self->{api_client}->call_api($_resource_path, $_method,
-                                           $query_params, $form_params,
-                                           $header_params, $_body_data, $auth_settings);
-    if (!$response) {
-        return;
-    }
-    my $_response_object = $self->{api_client}->deserialize('Order', $response);
-    return $_response_object;
-    
-}
-
-#
-# get_order_by_id
-#
-# Find purchase order by ID
-# 
-# @param string $order_id ID of pet that needs to be fetched (required)
-{
-    my $params = {
-    'order_id' => {
-        data_type => 'string',
-        description => 'ID of pet that needs to be fetched',
-        required => '1',
-    },
-    };
-    __PACKAGE__->method_documentation->{ get_order_by_id } = { 
-    	summary => 'Find purchase order by ID',
-        params => $params,
-        returns => 'Order',
-        };
-}
-# @return Order
-#
-sub get_order_by_id {
-    my ($self, %args) = @_;
-
-    
-    # verify the required parameter 'order_id' is set
-    unless (exists $args{'order_id'}) {
-      croak("Missing the required parameter 'order_id' when calling get_order_by_id");
-    }
-    
-
-    # parse inputs
-    my $_resource_path = '/store/order/{orderId}';
-    $_resource_path =~ s/{format}/json/; # default format to json
-
-    my $_method = 'GET';
-    my $query_params = {};
-    my $header_params = {};
-    my $form_params = {};
-
-    # 'Accept' and 'Content-Type' header
-    my $_header_accept = $self->{api_client}->select_header_accept('application/json', 'application/xml');
-    if ($_header_accept) {
-        $header_params->{'Accept'} = $_header_accept;
-    }
-    $header_params->{'Content-Type'} = $self->{api_client}->select_header_content_type();
-
-    
-    
-    # path params
-    if ( exists $args{'order_id'}) {
-        my $_base_variable = "{" . "orderId" . "}";
-        my $_base_value = $self->{api_client}->to_path_value($args{'order_id'});
-        $_resource_path =~ s/$_base_variable/$_base_value/g;
-    }
-    
-    my $_body_data;
-    
-
-    # authentication setting, if any
-    my $auth_settings = [qw()];
-
-    # make the API Call
-    my $response = $self->{api_client}->call_api($_resource_path, $_method,
-                                           $query_params, $form_params,
-                                           $header_params, $_body_data, $auth_settings);
-    if (!$response) {
-        return;
-    }
-    my $_response_object = $self->{api_client}->deserialize('Order', $response);
-    return $_response_object;
-    
-}
-
-#
 # delete_order
 #
 # Delete purchase order by ID
@@ -278,12 +76,10 @@ sub get_order_by_id {
 sub delete_order {
     my ($self, %args) = @_;
 
-    
     # verify the required parameter 'order_id' is set
     unless (exists $args{'order_id'}) {
       croak("Missing the required parameter 'order_id' when calling delete_order");
     }
-    
 
     # parse inputs
     my $_resource_path = '/store/order/{orderId}';
@@ -295,35 +91,212 @@ sub delete_order {
     my $form_params = {};
 
     # 'Accept' and 'Content-Type' header
-    my $_header_accept = $self->{api_client}->select_header_accept('application/json', 'application/xml');
+    my $_header_accept = $self->{api_client}->select_header_accept('application/xml', 'application/json');
     if ($_header_accept) {
         $header_params->{'Accept'} = $_header_accept;
     }
     $header_params->{'Content-Type'} = $self->{api_client}->select_header_content_type();
 
-    
-    
     # path params
     if ( exists $args{'order_id'}) {
         my $_base_variable = "{" . "orderId" . "}";
         my $_base_value = $self->{api_client}->to_path_value($args{'order_id'});
         $_resource_path =~ s/$_base_variable/$_base_value/g;
     }
-    
+
     my $_body_data;
-    
+    # authentication setting, if any
+    my $auth_settings = [qw()];
+
+    # make the API Call
+    $self->{api_client}->call_api($_resource_path, $_method,
+                                           $query_params, $form_params,
+                                           $header_params, $_body_data, $auth_settings);
+    return;
+}
+
+#
+# get_inventory
+#
+# Returns pet inventories by status
+# 
+{
+    my $params = {
+    };
+    __PACKAGE__->method_documentation->{ get_inventory } = { 
+    	summary => 'Returns pet inventories by status',
+        params => $params,
+        returns => 'HASH[string,int]',
+        };
+}
+# @return HASH[string,int]
+#
+sub get_inventory {
+    my ($self, %args) = @_;
+
+    # parse inputs
+    my $_resource_path = '/store/inventory';
+    $_resource_path =~ s/{format}/json/; # default format to json
+
+    my $_method = 'GET';
+    my $query_params = {};
+    my $header_params = {};
+    my $form_params = {};
+
+    # 'Accept' and 'Content-Type' header
+    my $_header_accept = $self->{api_client}->select_header_accept('application/json');
+    if ($_header_accept) {
+        $header_params->{'Accept'} = $_header_accept;
+    }
+    $header_params->{'Content-Type'} = $self->{api_client}->select_header_content_type();
+
+    my $_body_data;
+    # authentication setting, if any
+    my $auth_settings = [qw(api_key )];
+
+    # make the API Call
+    my $response = $self->{api_client}->call_api($_resource_path, $_method,
+                                           $query_params, $form_params,
+                                           $header_params, $_body_data, $auth_settings);
+    if (!$response) {
+        return;
+    }
+    my $_response_object = $self->{api_client}->deserialize('HASH[string,int]', $response);
+    return $_response_object;
+}
+
+#
+# get_order_by_id
+#
+# Find purchase order by ID
+# 
+# @param int $order_id ID of pet that needs to be fetched (required)
+{
+    my $params = {
+    'order_id' => {
+        data_type => 'int',
+        description => 'ID of pet that needs to be fetched',
+        required => '1',
+    },
+    };
+    __PACKAGE__->method_documentation->{ get_order_by_id } = { 
+    	summary => 'Find purchase order by ID',
+        params => $params,
+        returns => 'Order',
+        };
+}
+# @return Order
+#
+sub get_order_by_id {
+    my ($self, %args) = @_;
+
+    # verify the required parameter 'order_id' is set
+    unless (exists $args{'order_id'}) {
+      croak("Missing the required parameter 'order_id' when calling get_order_by_id");
+    }
+
+    # parse inputs
+    my $_resource_path = '/store/order/{orderId}';
+    $_resource_path =~ s/{format}/json/; # default format to json
+
+    my $_method = 'GET';
+    my $query_params = {};
+    my $header_params = {};
+    my $form_params = {};
+
+    # 'Accept' and 'Content-Type' header
+    my $_header_accept = $self->{api_client}->select_header_accept('application/xml', 'application/json');
+    if ($_header_accept) {
+        $header_params->{'Accept'} = $_header_accept;
+    }
+    $header_params->{'Content-Type'} = $self->{api_client}->select_header_content_type();
+
+    # path params
+    if ( exists $args{'order_id'}) {
+        my $_base_variable = "{" . "orderId" . "}";
+        my $_base_value = $self->{api_client}->to_path_value($args{'order_id'});
+        $_resource_path =~ s/$_base_variable/$_base_value/g;
+    }
+
+    my $_body_data;
+    # authentication setting, if any
+    my $auth_settings = [qw()];
+
+    # make the API Call
+    my $response = $self->{api_client}->call_api($_resource_path, $_method,
+                                           $query_params, $form_params,
+                                           $header_params, $_body_data, $auth_settings);
+    if (!$response) {
+        return;
+    }
+    my $_response_object = $self->{api_client}->deserialize('Order', $response);
+    return $_response_object;
+}
+
+#
+# place_order
+#
+# Place an order for a pet
+# 
+# @param Order $body order placed for purchasing the pet (required)
+{
+    my $params = {
+    'body' => {
+        data_type => 'Order',
+        description => 'order placed for purchasing the pet',
+        required => '1',
+    },
+    };
+    __PACKAGE__->method_documentation->{ place_order } = { 
+    	summary => 'Place an order for a pet',
+        params => $params,
+        returns => 'Order',
+        };
+}
+# @return Order
+#
+sub place_order {
+    my ($self, %args) = @_;
+
+    # verify the required parameter 'body' is set
+    unless (exists $args{'body'}) {
+      croak("Missing the required parameter 'body' when calling place_order");
+    }
+
+    # parse inputs
+    my $_resource_path = '/store/order';
+    $_resource_path =~ s/{format}/json/; # default format to json
+
+    my $_method = 'POST';
+    my $query_params = {};
+    my $header_params = {};
+    my $form_params = {};
+
+    # 'Accept' and 'Content-Type' header
+    my $_header_accept = $self->{api_client}->select_header_accept('application/xml', 'application/json');
+    if ($_header_accept) {
+        $header_params->{'Accept'} = $_header_accept;
+    }
+    $header_params->{'Content-Type'} = $self->{api_client}->select_header_content_type();
+
+    my $_body_data;
+    # body params
+    if ( exists $args{'body'}) {
+        $_body_data = $args{'body'};
+    }
 
     # authentication setting, if any
     my $auth_settings = [qw()];
 
     # make the API Call
-    
-    $self->{api_client}->call_api($_resource_path, $_method,
+    my $response = $self->{api_client}->call_api($_resource_path, $_method,
                                            $query_params, $form_params,
                                            $header_params, $_body_data, $auth_settings);
-    return;
-    
+    if (!$response) {
+        return;
+    }
+    my $_response_object = $self->{api_client}->deserialize('Order', $response);
+    return $_response_object;
 }
-
 
 1;
