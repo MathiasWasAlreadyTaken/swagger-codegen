@@ -1,0 +1,68 @@
+/**
+ * {{appName}}
+ *
+ * {{appDescription}}
+ *
+ * Version: {{version}}
+ * Generated: {{generatedDate}}
+ */
+
+#ifndef __httpmanager_h__
+#define __httpmanager_h__
+
+#include <memory>
+#include <mutex>
+#include <cpprest/details/basic_types.h>
+#include <vector>
+
+namespace swagger {
+	namespace cpprest {
+		namespace request {
+			class RequestObject;
+			{{#operations}}
+			namespace {{key}} {
+				{{#value}}{{#operation}}{{#customObject}}class {{operation}}Request;{{/customObject}}
+				{{/operation}}{{/value}}
+			}
+			{{/operations}}
+		}
+
+		class HttpManagerBase
+		{
+		public:
+			virtual ~HttpManagerBase() {}
+
+		protected:
+			{{#operations}}{{#value}}{{#operation}}{{#customObject}}friend class request::{{namespace}}::{{operation}}Request;
+			{{/customObject}}{{/operation}}{{/value}}{{/operations}}
+			HttpManagerBase(const utility::string_t& baseUrl);
+			void addRequest(std::shared_ptr<request::RequestObject> object);
+			std::shared_ptr<request::RequestObject> removeRequest(const request::RequestObject* object);
+			const utility::string_t& getBaseUrl() const;
+
+		private:
+			std::vector<std::shared_ptr<request::RequestObject>> ongoingRequests_;
+			std::mutex ongoingRequestsMutex_;
+			const utility::string_t baseUrl_;
+		};
+
+		{{#operations}}
+		namespace {{key}} {
+		{{#value}}
+			class HttpManager : public HttpManagerBase
+			{
+			public:
+				HttpManager();
+				HttpManager(const utility::string_t& baseUrl);
+				virtual ~HttpManager() {}
+
+				{{#operation}}{{#customObject}}std::weak_ptr<request::{{namespace}}::{{operation}}Request> create{{operation}}Request();{{/customObject}}
+				{{/operation}}
+ 			};
+		{{/value}}
+		}
+		{{/operations}}
+	}
+}
+
+#endif // __httpmanager_h__

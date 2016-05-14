@@ -1,0 +1,48 @@
+/**
+ * {{appName}}
+ *
+ * {{appDescription}}
+ *
+ * Version: {{version}}
+ * Generated: {{generatedDate}}
+ */
+
+{{#models}}{{#model}}#ifndef __{{classname}}_H__
+#define __{{classname}}_H__
+
+#include "ModelObject.h"
+{{/model}}{{/models}}
+{{#imports}}{{{import}}}
+{{/imports}}
+
+
+{{#models}}{{#model}}
+namespace swagger {
+    namespace cpprest {
+        namespace model {
+
+            class {{classname}}: public ModelObject {
+            public:
+                {{classname}}();
+                virtual ~{{classname}}();
+
+                virtual web::json::value toJson() const;
+                virtual void fromJson(web::json::value& json);
+
+                {{#vars}}
+                {{{datatype}}} {{getter}}() const;
+                void {{setter}}({{#complexType}}const {{/complexType}}{{{datatype}}}{{#complexType}}&{{/complexType}} {{name}});
+                {{/vars}}
+
+            private:
+                {{#vars}}{{{datatype}}} {{name}}_; {{#required}}// Required{{/required}}
+                {{/vars}}
+            };
+
+        }
+    }
+}
+
+#endif // __{{classname}}_H__
+{{/model}}
+{{/models}}

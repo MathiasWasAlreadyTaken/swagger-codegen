@@ -32,6 +32,7 @@ public class CodegenOperation {
     public ExternalDocs externalDocs;
     public Map<String, Object> vendorExtensions;
     public String nickname; // legacy support
+    public Object customObject; // Used for generators that want more specialized information in the mustache file
 
     /**
      * Check if there's at least one parameter

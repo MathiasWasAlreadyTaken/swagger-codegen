@@ -1,0 +1,64 @@
+/**
+ * {{appName}}
+ *
+ * {{appDescription}}
+ *
+ * Version: {{version}}
+ * Generated: {{generatedDate}}
+ */
+
+{{#models}}{{#model}}#include "{{classname}}.h"
+#include <cpprest/http_client.h>
+
+
+namespace swagger {
+    namespace cpprest {
+        namespace model {
+
+            {{classname}}::{{classname}}() {
+
+            }
+
+            {{classname}}::~{{classname}}() {
+
+            }
+
+            web::json::value {{classname}}::toJson() const {
+                web::json::value val;
+                {{#vars}}{{#complexType}}{{#isContainer}}std::vector<web::json::value> {{name}}Array;
+                std::for_each({{name}}_.begin(), {{name}}_.end(), [&]({{{customObject.inner}}} obj) {
+                    {{name}}Array.push_back(obj->toJson());
+                });
+                if ({{name}}Array.size()) {
+                    val[U("{{name}}")] = {{customObject.jsonValueType}}(array);
+                }{{/isContainer}}{{^isContainer}}val[U("{{name}}")] = {{customObject.jsonValueType}}({{getter}}());{{/isContainer}}{{/complexType}}
+                {{^complexType}}val[U("{{name}}")] = {{customObject.jsonValueType}}({{getter}}());
+                {{/complexType}}{{/vars}}
+                return val;
+            }
+
+            void {{classname}}::fromJson(web::json::value& json) {
+                {{#vars}}
+                if (!json[U("{{baseName}}")].is_null()) {
+                    {{#customObject}}{{#isString}}if (json[U("{{baseName}}")].is_string()) {
+                        {{setter}}(json[U("{{baseName}}")].as_string());
+                    }{{/isString}}{{/customObject}}
+                }
+                {{/vars}}
+            }
+
+            {{#vars}}
+            {{{datatype}}} {{classname}}::{{getter}}() const {
+                return {{name}}_;
+            }
+
+            void {{classname}}::{{setter}}({{#complexType}}const {{/complexType}}{{{datatype}}}{{#complexType}}&{{/complexType}} {{name}}) {
+                {{name}}_ = {{name}};
+            }
+            {{/vars}}
+       } 
+    }
+}
+
+{{/model}}
+{{/models}}

@@ -1,6 +1,7 @@
 io.swagger.codegen.languages.AndroidClientCodegen
 io.swagger.codegen.languages.AndroidVolleyClientCodegen
 io.swagger.codegen.languages.AsyncScalaClientCodegen
+io.swagger.codegen.languages.CpprestClientCodegen
 io.swagger.codegen.languages.CSharpClientCodegen
 io.swagger.codegen.languages.DartClientCodegen
 io.swagger.codegen.languages.FlashClientCodegen

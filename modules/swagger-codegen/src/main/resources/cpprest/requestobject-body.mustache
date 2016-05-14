@@ -1,0 +1,52 @@
+/**
+ * {{appName}}
+ *
+ * {{appDescription}}
+ *
+ * Version: {{version}}
+ * Generated: {{generatedDate}}
+ */
+
+#include "RequestObject.h"
+
+namespace swagger {
+    namespace cpprest {
+        namespace request {
+
+            RequestObject::RequestObject(const utility::string_t& baseUrl, HttpManagerBase& manager) : baseUrl_(baseUrl), manager_(manager)
+            {
+
+            }
+                
+            RequestObject::RequestObject(const RequestObject& other) : baseUrl_(other.baseUrl_), manager_(other.manager_)
+            {
+            }
+             
+            RequestObject& RequestObject::operator=(const RequestObject& other)
+            {
+                return *this;
+            }
+
+            void RequestObject::cancel()
+            {
+                cancelToken_.cancel();
+            }
+            
+            void RequestObject::addUrlParameter(const utility::string_t& key, const utility::string_t& value)
+            {
+                params_.insert(std::make_pair(key, value));
+            }
+            
+            void RequestObject::addHeader(const utility::string_t& header, const utility::string_t& value)
+            {
+                headers_.insert(std::make_pair(header, value));
+            }
+            
+            void RequestObject::setTimeout(long long seconds)
+            {
+                httpConfig_.set_timeout(utility::seconds(seconds));
+            }
+
+        }
+    }
+}
