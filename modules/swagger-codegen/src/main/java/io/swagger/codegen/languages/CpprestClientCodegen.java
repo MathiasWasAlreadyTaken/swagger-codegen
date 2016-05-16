@@ -30,8 +30,11 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
 
     public class CustomProperty {
         public String jsonValueType;
-        public String inner;
+        public boolean isNumber = false;
+        public boolean isBoolean = false;
         public boolean isString = false;
+        public boolean isObject = true;
+        //public boolean isArray = false;
         public boolean isDateTime = false;
     }
     public class CustomOperation {
@@ -78,22 +81,6 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
         stdTypesInclude.put("Binary", "vector");
         stdTypesInclude.put("Date", "cpprest/asyncrt_utils.h");
         stdTypesInclude.put("DateTime", "cpprest/asyncrt_utils.h");
-
-        /*enum value_type
-        {
-            /// Number value
-            Number,
-            /// Boolean value
-            Boolean,
-            /// String value
-            String,
-            /// Object value
-            Object,
-            /// Array value
-            Array,
-            /// Null value
-            Null
-        };*/
 
         jsonTypeMapping.put("int", "web::json::value::number");
         jsonTypeMapping.put("int32_t", "web::json::value::number");
@@ -260,14 +247,31 @@ public class CpprestClientCodegen extends DefaultCodegen implements CodegenConfi
                 CustomProperty customProperty = new CustomProperty();
                 if (jsonTypeMapping.containsKey(var.baseType)) {
                     customProperty.jsonValueType = jsonTypeMapping.get(var.baseType);
-                    if (var.isContainer != null && var.isContainer == true) {
-                        customProperty.inner = "std::shared_ptr<" + var.complexType + ">";
-                    }
                 }
-                if (var.datatype.equals("utility::string_t")) {
-                    customProperty.isString = true;
-                } else if (var.datatype.equals("utility::datetime")) {
-                    customProperty.isDateTime = true;
+                if (var.isContainer != null && var.isContainer == true) {
+                    if (var.items != null && var.items.datatype != null) {
+                        if (var.items.datatype.equals("utility::string_t")) {
+                            customProperty.isString = true;
+                            customProperty.isObject = false;
+                        } else if (var.items.datatype.equals("utility::datetime")) {
+                            customProperty.isDateTime = true;
+                            customProperty.isObject = false;
+                        }
+                    }
+                } else {
+                    if (var.isBoolean != null && var.isBoolean) {
+                        customProperty.isBoolean = true;
+                        customProperty.isObject = false;
+                    } else if ((var.isDouble != null && var.isDouble) || (var.isFloat != null && var.isFloat) || (var.isInteger != null && var.isInteger) || (var.isLong != null && var.isLong)) {
+                        customProperty.isNumber = true;
+                        customProperty.isObject = false;
+                    } else if (var.isString != null && var.isString) {
+                        customProperty.isString = true;
+                        customProperty.isObject = false;
+                    } else if ((var.isDate != null && var.isDate) || (var.isDateTime != null && var.isDateTime)) {
+                        customProperty.isDateTime = true;
+                        customProperty.isObject = false;
+                    }
                 }
                 var.customObject = customProperty;
             }
