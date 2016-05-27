@@ -25,13 +25,22 @@ namespace swagger {
 
             web::json::value {{classname}}::toJson() const {
                 web::json::value val;
-                {{#vars}}{{#complexType}}{{#isContainer}}std::vector<web::json::value> {{name}}Array;
+                {{#vars}}
+                {{#complexType}}{{#isContainer}}std::vector<web::json::value> {{name}}Array;
                 std::for_each({{name}}_.begin(), {{name}}_.end(), [&]({{#items}}{{{datatype}}}{{/items}} obj) {
                     {{name}}Array.push_back({{#customObject}}{{#isString}}web::json::value::string(obj){{/isString}}{{#isObject}}obj->toJson(){{/isObject}}{{/customObject}});
                 });
                 if ({{name}}Array.size()) {
                     val[U("{{name}}")] = {{customObject.jsonValueType}}({{name}}Array);
-                }{{/isContainer}}{{^isContainer}}val[U("{{name}}")] = {{^customObject.jsonValueType}}{{getter}}()->toJson({{/customObject.jsonValueType}}{{#customObject.jsonValueType}}{{customObject.jsonValueType}}({{getter}}(){{#customObject}}{{#isDateTime}}.to_string(utility::datetime::ISO_8601){{/isDateTime}}{{/customObject}}{{/customObject.jsonValueType}});{{/isContainer}}{{/complexType}}
+                }{{/isContainer}}
+                {{^isContainer}}
+                    {{^customObject.jsonValueType}}if ({{getter}}().get()) { {{/customObject.jsonValueType}}
+                    val[U("{{name}}")] = 
+                    {{^customObject.jsonValueType}}{{getter}}()->toJson({{/customObject.jsonValueType}}
+                    {{#customObject.jsonValueType}}{{customObject.jsonValueType}}({{getter}}(){{#customObject}}{{#isDateTime}}.to_string(utility::datetime::ISO_8601){{/isDateTime}}{{/customObject}}{{/customObject.jsonValueType}});
+                    {{^customObject.jsonValueType}} } {{/customObject.jsonValueType}}
+                {{/isContainer}}
+                {{/complexType}}
                 {{^complexType}}val[U("{{name}}")] = {{customObject.jsonValueType}}({{getter}}(){{#customObject}}{{#isDateTime}}.to_string(utility::datetime::ISO_8601){{/isDateTime}}{{/customObject}});
                 {{/complexType}}{{/vars}}
                 return val;
@@ -40,9 +49,58 @@ namespace swagger {
             void {{classname}}::fromJson(web::json::value& json) {
                 {{#vars}}
                 if (!json[U("{{baseName}}")].is_null()) {
-                    {{#customObject}}{{#isString}}if (json[U("{{baseName}}")].is_string()) {
-                        {{setter}}(json[U("{{baseName}}")].as_string());
-                    }{{/isString}}{{/customObject}}
+                    if (json[U("{{baseName}}")]
+                    {{#isString}}.is_string(){{/isString}}
+                    {{#isInteger}}.is_number(){{/isInteger}}
+                    {{#isLong}}.is_number(){{/isLong}}
+                    {{#isFloat}}.is_number(){{/isFloat}}
+                    {{#isDouble}}.is_number(){{/isDouble}}
+                    {{#isByteArray}}.is_string(){{/isByteArray}}
+                    {{#isBinary}}.is_string(){{/isBinary}}
+                    {{#isBoolean}}.is_boolean(){{/isBoolean}}
+                    {{#isDate}}.is_string(){{/isDate}}
+                    {{#isDateTime}}.is_string(){{/isDateTime}}
+                    {{#isContainer}}.is_array(){{/isContainer}}
+                    {{^isContainer}}{{#customObject.isObject}}.is_object(){{/customObject.isObject}}{{/isContainer}}
+                    ) {
+                        {{^isContainer}}
+                            {{#customObject.isObject}}
+                                {{name}}_->fromJson(json[U("{{baseName}}")]
+                            {{/customObject.isObject}}
+                            {{^customObject.isObject}}
+                                {{setter}}(
+                                {{#isDate}}utility::datetime().from_string({{/isDate}}
+                                {{#isDateTime}}utility::datetime().from_string({{/isDateTime}}
+                                json[U("{{baseName}}")]
+                                {{#isString}}.as_string(){{/isString}}
+                                {{#isInteger}}.as_number().to_int32(){{/isInteger}}
+                                {{#isLong}}.as_number().to_int32(){{/isLong}}
+                                {{#isFloat}}.as_number().to_double(){{/isFloat}}
+                                {{#isDouble}}.as_number().to_double(){{/isDouble}}
+                                {{#isByteArray}}.as_string(){{/isByteArray}}
+                                {{#isBinary}}.as_string(){{/isBinary}}
+                                {{#isBoolean}}.as_bool(){{/isBoolean}}
+                                {{#isDate}}.as_string(), utility::datetime::ISO_8601){{/isDate}}
+                                {{#isDateTime}}.as_string(), utility::datetime::ISO_8601){{/isDateTime}}
+                            {{/customObject.isObject}}
+                        );
+                        {{/isContainer}}
+                        {{#isContainer}}
+                            web::json::array arr = json[U("{{baseName}}")].as_array();
+                            std::for_each(arr.begin(), arr.end(), [&](web::json::value& value) {
+                                {{#complexType}}
+                                    {{#customObject.isString}}
+                                        {{name}}_.push_back(utility::string_t(value.as_string()));
+                                    {{/customObject.isString}}
+                                    {{#customObject.isObject}}
+                                        {{#items}}{{{datatype}}}{{/items}} obj(new {{{complexType}}});
+                                        obj->fromJson(value);
+                                        {{name}}_.push_back(obj);
+                                    {{/customObject.isObject}}
+                                {{/complexType}}
+                            });
+                        {{/isContainer}}
+                    }
                 }
                 {{/vars}}
             }
